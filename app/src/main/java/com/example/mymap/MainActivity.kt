@@ -6,6 +6,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Location
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -57,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         checkTheSetting()
+
     }
 
     fun checkTheSetting(){
@@ -68,6 +70,7 @@ class MainActivity : AppCompatActivity() {
 //            initLocation()
 //        }
     }
+
     fun initListener(){
         button.setOnClickListener {
             AuthUI.getInstance()//로그아웃
@@ -112,16 +115,23 @@ class MainActivity : AppCompatActivity() {
         val mk1 = googleMap.addMarker(options)
         mk1.showInfoWindow()
     }
-    fun setCrossWalkMarker(){
+    fun setCrossWalkMarker(loc:LatLng){
+        var checkDirection:BooleanArray= booleanArrayOf(false,false,false,false)
+        var temp:FloatArray= FloatArray(1)
         for(i in 0..data.size - 1) {
             data.get(i) // MyData(lat,lng);
-            Log.e("DATA : ", data.get(i).lat + ", " + data.get(i).long)
-            val options = MarkerOptions()
-            val sample = LatLng(data.get(i).lat.toDouble(), data.get(i).long.toDouble())
-            options.position(sample)
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-            val mk1 = googleMap.addMarker(options)
-            mk1.showInfoWindow()
+            Location.distanceBetween(loc.latitude,loc.longitude,data.get(i).lat.toDouble(), data.get(i).long.toDouble(),temp)
+            Log.e("거릿값",temp[0].toString())
+            if(temp[0]<1000 ){
+                Log.e("DATA : ", data.get(i).lat + ", " + data.get(i).long)
+                val options = MarkerOptions()
+                val sample = LatLng(data.get(i).lat.toDouble(), data.get(i).long.toDouble())
+                options.position(sample)
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                val mk1 = googleMap.addMarker(options)
+                mk1.showInfoWindow()
+            }
+
         }
     }
     fun init(){
@@ -191,8 +201,8 @@ class MainActivity : AppCompatActivity() {
 
     fun startLocationUpdates(){
         locationRequest = LocationRequest.create()?.apply {
-            interval = 30000
-            fastestInterval = 15000
+            interval = 10000
+            fastestInterval = 5000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
         // 조건을 만족할때 위치정보를 가져오면 이함수 호출
@@ -203,7 +213,8 @@ class MainActivity : AppCompatActivity() {
                     loc = LatLng(location.latitude,location.longitude)
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc,18.0f)) // 위치 바로이동
                     // 비교하는 함수를 넣어서 가장 가까운 녀석 좌표 뽑아보기 할까?
-                    search(loc)
+                    setCrossWalkMarker(loc)
+                    //search(loc)
                 }
             }
         }
@@ -277,7 +288,7 @@ class MainActivity : AppCompatActivity() {
 //            options.snippet("서울역")
             val mk1 = googleMap.addMarker(options)
             mk1.showInfoWindow()
-            setCrossWalkMarker()
+           // setCrossWalkMarker()
             initMapListener()
         }
     }

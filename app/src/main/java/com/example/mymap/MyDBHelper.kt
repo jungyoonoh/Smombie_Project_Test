@@ -1,7 +1,6 @@
 package com.example.mymap
 
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.SharedPreferences
@@ -24,7 +23,7 @@ import java.net.URL
 
 class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     var list:ArrayList<MyData> = ArrayList<MyData>()
-    val MAX=32133//최대값
+    val MAX=1000//최대값
 
     companion object {
         val DATABASE_VERSION = 1
@@ -42,7 +41,6 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val LAT = "lat"
             val LNG = "lng"
         }
-
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -53,6 +51,7 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         //db 버전 바꼈을때 실행
     }
+
     fun makeData(editor: SharedPreferences.Editor){
         val db= writableDatabase
         var end:Int=0
