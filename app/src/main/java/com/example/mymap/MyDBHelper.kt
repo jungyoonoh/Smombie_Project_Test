@@ -78,8 +78,7 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     fun deleteAll(){
         val db = writableDatabase
-        db.execSQL("delete from " + TABLE_NAME);
-
+        db.execSQL("delete from " + TABLE_NAME)
     }
 
 
