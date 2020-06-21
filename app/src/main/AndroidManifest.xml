@@ -24,7 +24,7 @@
         </activity>
         <activity android:name=".MainActivity">
         </activity>
-
+        <service android:name=".AlarmService"></service>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

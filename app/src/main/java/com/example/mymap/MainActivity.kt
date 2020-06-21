@@ -88,6 +88,21 @@ class MainActivity : AppCompatActivity() {
                     startActivity(i)
                 }
         }
+
+        button3.setOnClickListener{
+            val intent = Intent(this, AlarmService::class.java)
+            startService(intent)
+            Toast.makeText(this,"Service 시작",Toast.LENGTH_SHORT).show();
+
+
+        }
+        button4.setOnClickListener {
+            val intent = Intent(this, AlarmService::class.java)
+            stopService(intent)
+            Toast.makeText(this,"Service 끝",Toast.LENGTH_SHORT).show();
+
+
+        }
     }
 
     fun search(loc:LatLng){
@@ -141,21 +156,6 @@ class MainActivity : AppCompatActivity() {
         data=ArrayList<MyData>()
         initListener()
         data=myDbHelper.loadData()
-//        Log.e ("파싱시작","시작")
-//        // myDbHelper.deleteAll()
-//        data=ArrayList<MyData>() // 선언
-//        val pref = getSharedPreferences("checkFirst", Activity.MODE_PRIVATE)
-//        val first=pref.getBoolean("checkFirst",true)//(키 값, 디폴트값 : 첫실행때 갖는값)
-//
-//        if(first){
-//            val editor = pref.edit()
-//            editor.putBoolean("checkFirst", false)
-//            editor.commit()
-//            myDbHelper.loading()
-//            myDbHelper.makeData()
-//        }
-        //data=myDbHelper.loadData()
-        // 첫실행때는 바로 데이터 띄우지 못함
     }
     fun initLocation(){
         // 권한정보 체크 = checkSelfPermission
