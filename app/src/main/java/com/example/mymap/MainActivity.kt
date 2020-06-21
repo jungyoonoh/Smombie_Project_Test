@@ -65,10 +65,7 @@ class MainActivity : AppCompatActivity() {
         init()
         initListener()
         initLocation()
-//        button.setOnClickListener {
-//            data=myDbHelper.loadData()
-//            initLocation()
-//        }
+
     }
 
     fun initListener(){
@@ -76,6 +73,8 @@ class MainActivity : AppCompatActivity() {
             AuthUI.getInstance()//로그아웃
                 .signOut(this)
                 .addOnCompleteListener {
+                    val intent = Intent(this, AlarmService::class.java)
+                    stopService(intent)
                     val i = Intent(this, StartActivity::class.java)
                     startActivity(i)
                 }
@@ -84,6 +83,8 @@ class MainActivity : AppCompatActivity() {
             AuthUI.getInstance()
                 .delete(this)//계정 탈퇴
                 .addOnCompleteListener {
+                    val intent = Intent(this, AlarmService::class.java)
+                    stopService(intent)
                     val i = Intent(this, StartActivity::class.java)
                     startActivity(i)
                 }
