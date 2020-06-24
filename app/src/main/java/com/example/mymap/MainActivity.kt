@@ -70,11 +70,15 @@ class MainActivity : AppCompatActivity() {
                 if(pos==0) {
                     menu1.visibility=VISIBLE
                     menu2.visibility= GONE
+                    menu3.visibility= GONE
                 } else if(pos==1){
                     menu1.visibility=GONE
                     menu2.visibility=VISIBLE
+                    menu3.visibility= GONE
                 } else if(pos==2){
-
+                    menu1.visibility=GONE
+                    menu2.visibility= GONE
+                    menu3.visibility= VISIBLE
                 }
             }
         })
