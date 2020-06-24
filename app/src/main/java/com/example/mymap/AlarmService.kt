@@ -144,47 +144,51 @@ class AlarmService :Service (){
                 //알람
                 if(data.get(i).isNearby==false) {
                     data.get(i).isNearby=true
-                    val CHANNELID = "notification2"
-                    val notificationChannel = NotificationChannel(// 알람등 설정 가능한 channel 설정
-                        CHANNELID,
-                        "Map Check Notification",
-                        NotificationManager.IMPORTANCE_DEFAULT
-                    )
-                    notificationChannel.enableVibration(true)
-                    notificationChannel.vibrationPattern = longArrayOf(100, 200)
+                   if(!isVibrate) {
+                       val CHANNELID = "notification2"
+                       val notificationChannel = NotificationChannel(// 알람등 설정 가능한 channel 설정
+                           CHANNELID,
+                           "Map Check Notification",
+                           NotificationManager.IMPORTANCE_DEFAULT
+                       )
+                       notificationChannel.enableVibration(true)
+                       notificationChannel.vibrationPattern = longArrayOf(100, 200)
 
-                    //화면꺼진상태에선 on 상태여도 알림 x
+                       //화면꺼진상태에선 on 상태여도 알림 x
 
-                    val builder = Notification.Builder(this, CHANNELID)
-                    builder.setContentTitle("위험!")
-                    builder.setContentText("주변에 횡단보도 감지 주의하세요!")
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                       val builder = Notification.Builder(this, CHANNELID)
+                       builder.setContentTitle("위험!")
+                       builder.setContentText("주변에 횡단보도 감지 주의하세요!")
+                           .setSmallIcon(R.mipmap.ic_launcher)
 
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags =
-                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP //화면 전환 intent
+                       val intent = Intent(this, MainActivity::class.java)
+                       intent.flags =
+                           Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP //화면 전환 intent
 
-                    val user = FirebaseAuth.getInstance().currentUser
-                    intent.putExtra("ID", user?.email.toString())
+                       val user = FirebaseAuth.getInstance().currentUser
+                       intent.putExtra("ID", user?.email.toString())
 
-                    val pendingIntent = PendingIntent.getActivity(
-                        this,
-                        1, intent, PendingIntent.FLAG_UPDATE_CURRENT
-                    )
+                       val pendingIntent = PendingIntent.getActivity(
+                           this,
+                           1, intent, PendingIntent.FLAG_UPDATE_CURRENT
+                       )
 
-                    builder.setContentIntent(pendingIntent)
+                       builder.setContentIntent(pendingIntent)
 
-                    val notification = builder.build()
-                    val manager = getSystemService(Context.NOTIFICATION_SERVICE)
-                            as NotificationManager
-                    manager.createNotificationChannel(notificationChannel)
+                       val notification = builder.build()
+                       val manager = getSystemService(Context.NOTIFICATION_SERVICE)
+                               as NotificationManager
+                       manager.createNotificationChannel(notificationChannel)
 
-                    manager.notify(10, notification)
+                       manager.notify(10, notification)
+                       isVibrate=true
+                   }
                 }
 
             }else data.get(i).isNearby = false
 
         }// 확인누르면 알림끝내고
+        //isVibrate=false
     }
 
     //지도기능
