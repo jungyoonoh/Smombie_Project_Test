@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorGray"
     android:orientation="vertical"
     android:paddingLeft="5dp"
     android:paddingTop="5dp"
@@ -11,7 +12,8 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite" />
     <!--    <Button-->
     <!--        android:id="@+id/button"-->
     <!--        android:layout_width="match_parent"-->
@@ -34,19 +36,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="gone">
-
-            <fragment
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2" />
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -70,6 +64,12 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -86,15 +86,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/settinglabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/nanumsquareroundeb"
-                android:paddingLeft="5dp"
+                android:layout_marginTop="2dp"
 
+                android:background="@color/colorWhite"
+                android:fontFamily="@font/nanumsquareroundeb"
+                android:paddingLeft="15dp"
                 android:paddingTop="5dp"
                 android:text="메뉴"
                 android:textColor="@color/colorBlack"
@@ -104,8 +106,10 @@
                 android:id="@+id/userId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:background="#FFFFFF"
                 android:fontFamily="@font/nanumsquareroundb"
-                android:paddingLeft="5dp"
+                android:paddingLeft="15dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="TextView"
@@ -113,16 +117,58 @@
                 android:textSize="20sp" />
 
             <Button
-                android:id="@+id/button2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="회원탈퇴" />
-
-            <Button
                 android:id="@+id/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="로그아웃" />
+                android:background="@color/colorWhite"
+                android:drawableLeft="@drawable/logout"
+                android:fontFamily="@font/nanumsquareroundr"
+                android:paddingLeft="10dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="   로그아웃"
+                android:textAlignment="textStart" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:drawableLeft="@drawable/exit"
+                android:fontFamily="@font/nanumsquareroundr"
+                android:paddingLeft="10dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="   회원탈퇴"
+                android:textAlignment="textStart" />
+
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:drawableLeft="@drawable/robot"
+                android:fontFamily="@font/nanumsquareroundr"
+                android:paddingLeft="10dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="   앱 버전\n   1.0"
+                android:textAlignment="textStart" />
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:background="@color/colorWhite"
+                android:drawableLeft="@drawable/manual"
+                android:fontFamily="@font/nanumsquareroundr"
+                android:paddingLeft="10dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="   도움말"
+                android:textAlignment="textStart" />
+
         </LinearLayout>
 
     </FrameLayout>
