@@ -6,9 +6,15 @@
     android:orientation="vertical">
 
     <TextView
-        android:text="로딩 중 "
+        android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:id="@+id/title" android:textSize="30sp"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:fontFamily="@font/nanumsquareroundeb"
+        android:gravity="center|clip_vertical"
+        android:padding="10dp"
+        android:text="로딩 중 "
+        android:textSize="30sp" />
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"

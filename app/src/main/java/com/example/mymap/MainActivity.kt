@@ -131,13 +131,12 @@ class MainActivity : AppCompatActivity() {
         val mk1 = googleMap.addMarker(options)
         mk1.showInfoWindow()
     }
-    fun setCrossWalkMarker(loc:LatLng){
+    fun setCrossWalkMarker(loc:LatLng){ // 근처 애들만 마커찍기 테스트용
         var checkDirection:BooleanArray= booleanArrayOf(false,false,false,false)
         var temp:FloatArray= FloatArray(1)
         for(i in 0..data.size - 1) {
             data.get(i) // MyData(lat,lng);
             Location.distanceBetween(loc.latitude,loc.longitude,data.get(i).lat.toDouble(), data.get(i).long.toDouble(),temp)
-            Log.e("거릿값",temp[0].toString())
             if(temp[0]<1000 ){
                 Log.e("DATA : ", data.get(i).lat + ", " + data.get(i).long)
                 val options = MarkerOptions()
@@ -200,7 +199,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun startLocationUpdates(){
+    fun startLocationUpdates(){ // 현재 위치 받아오기
         locationRequest = LocationRequest.create()?.apply {
             interval = 10000
             fastestInterval = 5000
@@ -214,6 +213,7 @@ class MainActivity : AppCompatActivity() {
                     loc = LatLng(location.latitude,location.longitude)
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc,18.0f)) // 위치 바로이동
                     // 비교하는 함수를 넣어서 가장 가까운 녀석 좌표 뽑아보기 할까?
+                    addCircleNearUser(loc)
                     setCrossWalkMarker(loc)
                     //search(loc)
                 }
@@ -235,44 +235,6 @@ class MainActivity : AppCompatActivity() {
         stopLocationUpdates()
     }
 
-//    fun initspinner(){
-//        val adapter = ArrayAdapter<String>(this,
-//            android.R.layout.simple_spinner_dropdown_item,ArrayList<String>())
-//        adapter.add("Hybrid") // 하이브리드
-//        adapter.add("Normal") // 노말
-//        adapter.add("Satellite") // 위성
-//        adapter.add("Terrian") // 지형지도
-//        spinner.adapter = adapter
-//        spinner.setSelection(1)
-//        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onNothingSelected(parent: AdapterView<*>?) {
-//
-//            }
-//
-//            override fun onItemSelected(
-//                parent: AdapterView<*>?,
-//                view: View?,
-//                position: Int,
-//                id: Long
-//            ) {
-//                when(position){
-//                    0->{
-//                        googleMap?.mapType = GoogleMap.MAP_TYPE_HYBRID
-//                    }
-//                    1->{
-//                        googleMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
-//                    }
-//                    2->{
-//                        googleMap?.mapType = GoogleMap.MAP_TYPE_SATELLITE
-//                    }
-//                    3->{
-//                        googleMap?.mapType = GoogleMap.MAP_TYPE_TERRAIN
-//                    }
-//                }
-//            }
-//        }
-//    }
-
     fun initmap() {
         // map을 초기화를 해줘야..
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -281,31 +243,25 @@ class MainActivity : AppCompatActivity() {
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc,24.0f))
             googleMap.setMinZoomPreference(8.0f)
             googleMap.setMaxZoomPreference(24.0f)
-            val options = MarkerOptions()
-            val sample = LatLng(37.5085892,126.841663)
-            options.position(loc)
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-//            options.title("역")
-//            options.snippet("서울역")
-            val mk1 = googleMap.addMarker(options)
-            mk1.showInfoWindow()
-           // setCrossWalkMarker()
             initMapListener()
         }
     }
+    fun addCircleNearUser(loc:LatLng){
+        googleMap.clear()
+        var nearCircle = CircleOptions().center(loc) // 중심점
+            .radius(50.0)   //반지름 단위 : m
+            .strokeColor(Color.parseColor("#884169e1"))
+            .fillColor(Color.parseColor("#5587cefa")); //배경색
+        googleMap.addCircle(nearCircle)
+        var user = CircleOptions().center(loc) // 중심점
+            .radius(1.0)   //반지름 단위 : m
+            .strokeColor(Color.parseColor("#884169e1"))
+            .fillColor(Color.parseColor("#884169e1")); //배경색
+        googleMap.addCircle(user)
+    }
     fun initMapListener(){
         googleMap.setOnMapClickListener {
-//            googleMap.clear() // 구글맵 마커 지우기
-            arrLoc.add(it) // 누른 좌표값을 저장해두기
-            val options = MarkerOptions()
-            options.position(it)
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-            googleMap.addMarker(options)
-            //val lineOption = PolylineOptions().color(Color.GREEN).addAll(arrLoc) // arrLoc에 들어가있는 LatLng정보 기반으로 선을 그리겠다는 뜻!
-            val option2 = PolygonOptions().fillColor(Color.argb(100,255,255,0)) // alphabland = 투명도
-                .strokeColor(Color.GREEN).addAll(arrLoc)
-            //googleMap.addPolyline(lineOption)
-            googleMap.addPolygon(option2)
+
         }
     }
 }

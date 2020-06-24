@@ -23,7 +23,7 @@ import java.net.URL
 
 class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     var list:ArrayList<MyData> = ArrayList<MyData>()
-    val MAX=1000//최대값
+    val MAX=32133//최대값
 
     companion object {
         val DATABASE_VERSION = 1
