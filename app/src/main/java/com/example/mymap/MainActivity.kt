@@ -1,43 +1,33 @@
 package com.example.mymap
 
 import android.Manifest
-import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
-import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.Switch
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.*
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CircleOptions
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.BufferedInputStream
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.lang.Math.pow
 import java.lang.Math.sqrt
-import java.net.HttpURLConnection
-import java.net.URL
 import kotlin.math.absoluteValue
-import kotlin.math.log
 import kotlin.math.pow
-import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
 
@@ -57,10 +47,45 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        settingTab()
         checkTheSetting()
 
     }
+    fun settingTab(){
+        tab.addTab(tab.newTab().setText("홈"))
+        tab.addTab(tab.newTab().setText("게시판"))
+        tab.addTab(tab.newTab().setText("설정"))
+        tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(p0: TabLayout.Tab?) {
+              //  TODO("Not yet implemented")
+            }
 
+            override fun onTabUnselected(p0: TabLayout.Tab?) {
+                //TODO("Not yet implemented")
+            }
+
+            override fun onTabSelected(p0: TabLayout.Tab?) {
+                //TODO("Not yet implemented")
+                val pos=p0?.position
+                if(pos==0) {
+                    menu1.visibility=VISIBLE
+                    menu2.visibility= GONE
+                } else if(pos==1){
+                    menu1.visibility=GONE
+                    menu2.visibility=VISIBLE
+                } else if(pos==2){
+
+                }
+            }
+        })
+
+    }
+ /*   fun createTabView(tabName: String): View? {
+        val tabView: View =
+            LayoutInflater.from(this).inflate(R.layout.custom_tab, null)
+        txt_name.setText(tabName)
+        return tabView
+    }*/
     fun checkTheSetting(){
         init()
         initListener()
