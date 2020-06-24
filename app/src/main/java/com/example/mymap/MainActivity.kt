@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var id:String
 
+    var backKeyPressedTime:Double = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -223,6 +225,25 @@ class MainActivity : AppCompatActivity() {
                 initmap()
             }
         }
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        // 2초 이내로 눌러야함
+        if(System.currentTimeMillis()>backKeyPressedTime+2000){
+            backKeyPressedTime = System.currentTimeMillis().toDouble();
+            Toast.makeText(this, "한 번더 누르면 종료합니다.", Toast.LENGTH_SHORT).show();
+        }
+        //2번째 백버튼 클릭 (종료)
+        else{
+            appFinish();
+        }
+        backKeyPressedTime
+    }
+    fun appFinish(){
+        finishAffinity();
+        System.runFinalization();
+        System.exit(0);
     }
 
     fun startLocationUpdates(){ // 현재 위치 받아오기

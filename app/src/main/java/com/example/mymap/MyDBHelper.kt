@@ -45,7 +45,6 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_CREATE_ENTRIES)
-
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -60,7 +59,6 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             end=start+999
             if(end>32000) end=MAX
             arr.add(URL("http://openapi.seoul.go.kr:8088/65485243776b6f653731596e4b7178/json/SdeA004A1W/"+start+"/"+end+"/"))
-
         }
 
         var task:DataTask= DataTask( object : DataTask.AsyncResponse{

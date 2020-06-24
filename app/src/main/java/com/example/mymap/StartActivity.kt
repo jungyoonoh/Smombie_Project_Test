@@ -53,7 +53,7 @@ class StartActivity : AppCompatActivity() {
         if(user!=null){//로그인된경우 바로 메인화면
             val i = Intent(this, MainActivity::class.java) //IntentB.class : 호출할 class 이름
             i.putExtra("ID",user.email)
-            if(user?.email == "xkakak142@gmail.com") {
+            if(user?.email == "admin@konkuk.ac.kr") {
                 var admin = Intent(this, AdminActivity::class.java)
                 admin.putExtra("ID", user?.email)
                 startActivity(admin)
@@ -87,7 +87,7 @@ class StartActivity : AppCompatActivity() {
                 val user = FirebaseAuth.getInstance().currentUser
                 val i = Intent(this, MainActivity::class.java)
                 i.putExtra("ID",user?.email)
-                if(user?.email == "xkakak142@gmail.com"){
+                if(user?.email == "admin@konkuk.ac.kr"){
                     var admin = Intent(this,AdminActivity::class.java)
                     admin.putExtra("ID",user?.email)
                     startActivity(admin)

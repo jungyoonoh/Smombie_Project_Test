@@ -21,6 +21,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
 
 class AdminActivity : AppCompatActivity() {
+
+    var backKeyPressedTime:Double = 0.0
     var firstcall = true
     val myDbHelper: MyDBHelper = MyDBHelper(this)
     lateinit var data:ArrayList<MyData>
@@ -46,7 +48,7 @@ class AdminActivity : AppCompatActivity() {
     fun init(){
         val i = intent
         id = i.getStringExtra("ID")
-        userId.text="ID : "+id
+        userId.text="ID : "+id+" (관리자 모드로 작동중)"
         data=ArrayList<MyData>()
         initListener()
         data=myDbHelper.loadData()
@@ -56,17 +58,6 @@ class AdminActivity : AppCompatActivity() {
         button.setOnClickListener {
             AuthUI.getInstance()//로그아웃
                 .signOut(this)
-                .addOnCompleteListener {
-                    val intent = Intent(this, AlarmService::class.java)
-                    stopService(intent)
-                    val i = Intent(this, StartActivity::class.java)
-                    startActivity(i)
-                }
-        }
-
-        button2.setOnClickListener {
-            AuthUI.getInstance()
-                .delete(this)//계정 탈퇴
                 .addOnCompleteListener {
                     val intent = Intent(this, AlarmService::class.java)
                     stopService(intent)
@@ -171,5 +162,23 @@ class AdminActivity : AppCompatActivity() {
         googleMap.setOnMapClickListener {
 
         }
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        // 2초 이내로 눌러야함
+        if(System.currentTimeMillis()>backKeyPressedTime+2000){
+            backKeyPressedTime = System.currentTimeMillis().toDouble();
+            Toast.makeText(this, "한 번더 누르면 종료합니다.", Toast.LENGTH_SHORT).show();
+        }
+        //2번째 백버튼 클릭 (종료)
+        else{
+            appFinish();
+        }
+    }
+    fun appFinish(){
+        finishAffinity();
+        System.runFinalization();
+        System.exit(0);
     }
 }
