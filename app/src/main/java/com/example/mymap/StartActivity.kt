@@ -19,12 +19,14 @@ class StartActivity : AppCompatActivity() {
     val RC_SIGN_IN=123
     val myDbHelper: MyDBHelper = MyDBHelper(this)
     val GPS_REQUEST=1234
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
         init()
         // 1. id를 받아오기 2. true false 받아오기
     }
+
     fun init(){
         val pref = getSharedPreferences("checkFirst", Activity.MODE_PRIVATE)
         val first=pref.getBoolean("checkFirst",true)//(키 값, 디폴트값 : 첫실행때 갖는값)
@@ -44,7 +46,6 @@ class StartActivity : AppCompatActivity() {
         start.setOnClickListener {
             login()
         }
-
     }
 
     fun login(){
@@ -52,7 +53,12 @@ class StartActivity : AppCompatActivity() {
         if(user!=null){//로그인된경우 바로 메인화면
             val i = Intent(this, MainActivity::class.java) //IntentB.class : 호출할 class 이름
             i.putExtra("ID",user.email)
-            startActivity(i)
+            if(user?.email == "xkakak142@gmail.com") {
+                var admin = Intent(this, AdminActivity::class.java)
+                admin.putExtra("ID", user?.email)
+                startActivity(admin)
+            } else
+                startActivity(i)
         } else createSignInIntent()//아니면 로그인화면
     }
     fun createSignInIntent(){
@@ -81,7 +87,12 @@ class StartActivity : AppCompatActivity() {
                 val user = FirebaseAuth.getInstance().currentUser
                 val i = Intent(this, MainActivity::class.java)
                 i.putExtra("ID",user?.email)
-                startActivity(i)
+                if(user?.email == "xkakak142@gmail.com"){
+                    var admin = Intent(this,AdminActivity::class.java)
+                    admin.putExtra("ID",user?.email)
+                    startActivity(admin)
+                } else
+                    startActivity(i)
             } else {
                 Toast.makeText(this,"로그인 실패", Toast.LENGTH_LONG).show()
             }

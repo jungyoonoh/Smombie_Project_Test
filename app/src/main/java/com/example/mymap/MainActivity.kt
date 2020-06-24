@@ -58,14 +58,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         checkTheSetting()
-
     }
 
     fun checkTheSetting(){
         init()
         initListener()
         initLocation()
-
     }
 
     fun initListener(){
@@ -79,6 +77,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(i)
                 }
         }
+
         button2.setOnClickListener {
             AuthUI.getInstance()
                 .delete(this)//계정 탈퇴
@@ -94,15 +93,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AlarmService::class.java)
             startService(intent)
             Toast.makeText(this,"Service 시작",Toast.LENGTH_SHORT).show();
-
-
         }
+
         button4.setOnClickListener {
             val intent = Intent(this, AlarmService::class.java)
             stopService(intent)
             Toast.makeText(this,"Service 끝",Toast.LENGTH_SHORT).show();
-
-
         }
     }
 
@@ -131,22 +127,22 @@ class MainActivity : AppCompatActivity() {
         val mk1 = googleMap.addMarker(options)
         mk1.showInfoWindow()
     }
+
     fun setCrossWalkMarker(loc:LatLng){ // 근처 애들만 마커찍기 테스트용
         var checkDirection:BooleanArray= booleanArrayOf(false,false,false,false)
         var temp:FloatArray= FloatArray(1)
         for(i in 0..data.size - 1) {
             data.get(i) // MyData(lat,lng);
             Location.distanceBetween(loc.latitude,loc.longitude,data.get(i).lat.toDouble(), data.get(i).long.toDouble(),temp)
-            if(temp[0]<1000 ){
-                Log.e("DATA : ", data.get(i).lat + ", " + data.get(i).long)
-                val options = MarkerOptions()
-                val sample = LatLng(data.get(i).lat.toDouble(), data.get(i).long.toDouble())
-                options.position(sample)
-                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                val mk1 = googleMap.addMarker(options)
-                mk1.showInfoWindow()
-            }
-
+                if (temp[0] < 1000) { // 인근 정보만 표시되도록 우선 테스트
+                    Log.e("DATA : ", data.get(i).lat + ", " + data.get(i).long)
+                    val options = MarkerOptions()
+                    val sample = LatLng(data.get(i).lat.toDouble(), data.get(i).long.toDouble())
+                    options.position(sample)
+                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                    val mk1 = googleMap.addMarker(options)
+                    mk1.showInfoWindow()
+                }
         }
     }
     fun init(){
@@ -157,6 +153,7 @@ class MainActivity : AppCompatActivity() {
         initListener()
         data=myDbHelper.loadData()
     }
+
     fun initLocation(){
         // 권한정보 체크 = checkSelfPermission
         if(ActivityCompat.checkSelfPermission(this, // 이미 허용되어있다면?
