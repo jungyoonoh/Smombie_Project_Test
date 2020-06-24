@@ -136,10 +136,11 @@ class AlarmService :Service (){
     fun makeLocation(){
         //현재위치 갱신후 거리계산 후 있으면 알림
         var temp:FloatArray= FloatArray(1)
+        var isVibrate=false
         for(i in 0..data.size - 1) {
             data.get(i) // MyData(lat,lng);
             Location.distanceBetween(loc.latitude,loc.longitude,data.get(i).lat.toDouble(), data.get(i).long.toDouble(),temp)
-            if(temp[0]<5000){
+            if(temp[0]<500){
                 //알람
                 if(data.get(i).isNearby==false) {
                     data.get(i).isNearby=true

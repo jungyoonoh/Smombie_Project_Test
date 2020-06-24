@@ -10,40 +10,34 @@
 
     <Button
         android:id="@+id/start"
-        android:layout_width="167dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="147dp"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_marginBottom="180dp"
         android:fontFamily="@font/nanumsquareroundeb"
         android:text="시작하기"
         android:textColor="#000000"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.764" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="414dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginBottom="302dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="130dp"
         android:background="#B3B3B3"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/start"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="104dp"
             android:layout_height="104dp"
             android:layout_marginStart="32dp"
-            android:layout_marginBottom="340dp"
             app:srcCompat="@drawable/logo" />
 
         <TextView
