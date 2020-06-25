@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:layout_marginBottom="180dp"
+        android:background="@color/colorGray"
         android:fontFamily="@font/nanumsquareroundeb"
         android:text="시작하기"
         android:textColor="#000000"
@@ -28,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="130dp"
-        android:background="#B3B3B3"
+        android:background="@color/colorGray"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp">
@@ -51,7 +52,7 @@
             android:fontFamily="@font/nanumsquareroundeb"
             android:gravity="center|clip_vertical"
             android:text="Walking Path"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/colorBlack"
             android:textSize="36sp" />
     </LinearLayout>
 

@@ -23,6 +23,7 @@ class StartActivity : AppCompatActivity() {
     val RC_SIGN_IN=123
     val myDbHelper: MyDBHelper = MyDBHelper(this)
     val GPS_REQUEST=1234
+    var backKeyPressedTime:Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,10 +85,23 @@ class StartActivity : AppCompatActivity() {
                     }
                     val dialog = builder.create()
                     dialog.show()
+
+
                 }
+
         }
         start.setOnClickListener {
             login()
+        }
+        val user = FirebaseAuth.getInstance().currentUser
+        if(user!=null){//로그인된경우 바로 메인화면
+            val i = Intent(this, MainActivity::class.java) //IntentB.class : 호출할 class 이름
+            i.putExtra("ID",user.email)
+            if(user?.email == "admin@konkuk.ac.kr") {
+                var admin = Intent(this, AdminActivity::class.java)
+                admin.putExtra("ID", user?.email)
+                startActivity(admin)
+            } else startActivity(i)
         }
     }
 
@@ -100,15 +114,12 @@ class StartActivity : AppCompatActivity() {
                 var admin = Intent(this, AdminActivity::class.java)
                 admin.putExtra("ID", user?.email)
                 startActivity(admin)
-            } else
-                startActivity(i)
+            } else startActivity(i)
         } else createSignInIntent()//아니면 로그인화면
     }
-
     fun createSignInIntent(){
         val provider= arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build(),
-            AuthUI.IdpConfig.GoogleBuilder().build()
+            AuthUI.IdpConfig.EmailBuilder().build()
         )
 
         startActivityForResult(
@@ -116,8 +127,49 @@ class StartActivity : AppCompatActivity() {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(provider)
                 .setLogo(R.drawable.logo)
-                .setIsSmartLockEnabled(false).
+                .setTheme(R.style.LoginTheme)
+                .setIsSmartLockEnabled(false). //smartLock이 뭘까
                     build(),
             RC_SIGN_IN) // 로그인 하는 파이어베이스 제공 activity 시작
+//      .setLogo(R.drawable.my_great_logo) // Set logo drawable
+//                .setTheme(R.style.MySuperAppTheme) // Set theme
+        //login()
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val response = IdpResponse.fromResultIntent(data)
+            if (resultCode == Activity.RESULT_OK) {//로그인 최초 성공시
+                val user = FirebaseAuth.getInstance().currentUser
+                val i = Intent(this, MainActivity::class.java)
+                i.putExtra("ID",user?.email)
+                if(user?.email == "admin@konkuk.ac.kr"){
+                    var admin = Intent(this,AdminActivity::class.java)
+                    admin.putExtra("ID",user?.email)
+                    startActivity(admin)
+                } else
+                    startActivity(i)
+            } else {
+                Toast.makeText(this,"로그인 실패", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        // 2초 이내로 눌러야함
+        if(System.currentTimeMillis()>backKeyPressedTime+2000){
+            backKeyPressedTime = System.currentTimeMillis().toDouble();
+            Toast.makeText(this, "한 번더 누르면 종료합니다.", Toast.LENGTH_SHORT).show();
+        }
+        //2번째 백버튼 클릭 (종료)
+        else{
+            appFinish();
+        }
+        backKeyPressedTime
+    }
+    fun appFinish(){
+        finishAffinity();
+        System.runFinalization();
+        System.exit(0);
     }
 }

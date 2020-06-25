@@ -10,9 +10,9 @@ import android.location.Location
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -25,7 +25,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Math.sqrt
 import kotlin.math.absoluteValue
@@ -75,6 +74,7 @@ class MainActivity : AppCompatActivity() {
             }
             return@setOnNavigationItemSelectedListener true
         }
+
     }
     fun checkTheSetting(){
         init()
@@ -328,6 +328,8 @@ class MainActivity : AppCompatActivity() {
                 menu1.visibility=GONE
                 menu2.visibility=VISIBLE
                 menu3.visibility= GONE
+                val item: MenuItem = navigationView.menu.findItem(R.id.navigation_comment)
+                item.setChecked(true)
             }
         }
     }
