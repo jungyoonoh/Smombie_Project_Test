@@ -69,7 +69,7 @@ class AlarmService :Service (){
 //        )
 
         val builder = NotificationCompat.Builder(this,CHANNELID)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.logo)
             .setContentTitle("알림시작")
             .setContentText("지도 알림을 시작합니다.")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -159,7 +159,7 @@ class AlarmService :Service (){
                        val builder = Notification.Builder(this, CHANNELID)
                        builder.setContentTitle("위험!")
                        builder.setContentText("주변에 횡단보도 감지 주의하세요!")
-                           .setSmallIcon(R.mipmap.ic_launcher)
+                           .setSmallIcon(R.drawable.logo)
 
                        val intent = Intent(this, MainActivity::class.java)
                        intent.flags =

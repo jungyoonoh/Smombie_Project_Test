@@ -1,6 +1,7 @@
 package com.example.mymap
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -49,55 +50,42 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        settingTab()
         checkTheSetting()
     }
     fun settingTab(){
-        tab.addTab(tab.newTab().setText("홈"))
-        tab.addTab(tab.newTab().setText("게시판"))
-        tab.addTab(tab.newTab().setText("설정"))
-        tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(p0: TabLayout.Tab?) {
-              //  TODO("Not yet implemented")
-            }
-
-            override fun onTabUnselected(p0: TabLayout.Tab?) {
-                //TODO("Not yet implemented")
-            }
-
-            override fun onTabSelected(p0: TabLayout.Tab?) {
-                //TODO("Not yet implemented")
-                val pos=p0?.position
-                if(pos==0) {
+        navigationView.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.navigation_home->{
                     menu1.visibility=VISIBLE
                     menu2.visibility= GONE
                     menu3.visibility= GONE
-                } else if(pos==1){
+
+                }
+                R.id.navigation_comment->{
                     menu1.visibility=GONE
                     menu2.visibility=VISIBLE
                     menu3.visibility= GONE
-                } else if(pos==2){
+                }
+                R.id.navigation_setting->{
                     menu1.visibility=GONE
                     menu2.visibility= GONE
                     menu3.visibility= VISIBLE
                 }
             }
-        })
+            return@setOnNavigationItemSelectedListener true
+        }
 
     }
- /*   fun createTabView(tabName: String): View? {
-        val tabView: View =
-            LayoutInflater.from(this).inflate(R.layout.custom_tab, null)
-        txt_name.setText(tabName)
-        return tabView
-    }*/
     fun checkTheSetting(){
         init()
         initListener()
+        settingTab()
         initLocation()
     }
 
     fun initListener(){
+
+
         button.setOnClickListener {
             AuthUI.getInstance()//로그아웃
                 .signOut(this)
@@ -108,7 +96,6 @@ class MainActivity : AppCompatActivity() {
                     startActivity(i)
                 }
         }
-
         button2.setOnClickListener {
             AuthUI.getInstance()
                 .delete(this)//계정 탈퇴
@@ -120,17 +107,31 @@ class MainActivity : AppCompatActivity() {
                 }
         }
 
-        button3.setOnClickListener{
-            val intent = Intent(this, AlarmService::class.java)
-            startService(intent)
-            Toast.makeText(this,"Service 시작",Toast.LENGTH_SHORT).show();
+        //여기부터 토글버튼 관련코드
+        val pref = getSharedPreferences("checkOnOff", Activity.MODE_PRIVATE)
+        val check=pref.getBoolean("checkOnOff",false)//(키 값, 디폴트값 : 첫실행때 갖는값)
+        val editor = pref.edit()
+        if(check) {
+            OnOffSw.isChecked=true
+        }else{
+            OnOffSw.isChecked=false
+        }
+        OnOffSw.setOnCheckedChangeListener { compoundButton, b ->
+            if(b){
+                val intent = Intent(this, AlarmService::class.java)
+                editor.putBoolean("checkOnOff",true)
+                editor.commit()//저장 실행하는 함수
+                startService(intent)
+                Toast.makeText(this,"Service 시작",Toast.LENGTH_SHORT).show();
+            }else{
+                val intent = Intent(this, AlarmService::class.java)
+                stopService(intent)
+                editor.putBoolean("checkOnOff",false)
+                editor.commit()//저장 실행하는 함수
+                Toast.makeText(this,"Service 끝",Toast.LENGTH_SHORT).show();
+            }
         }
 
-        button4.setOnClickListener {
-            val intent = Intent(this, AlarmService::class.java)
-            stopService(intent)
-            Toast.makeText(this,"Service 끝",Toast.LENGTH_SHORT).show();
-        }
     }
 
     fun search(loc:LatLng){

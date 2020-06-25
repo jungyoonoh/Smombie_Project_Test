@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorGray"
+    android:background="@color/colorWhite"
     android:orientation="vertical"
     android:paddingLeft="5dp"
     android:paddingTop="5dp"
     tools:context=".MainActivity">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorWhite" />
     <!--    <Button-->
     <!--        android:id="@+id/button"-->
     <!--        android:layout_width="match_parent"-->
@@ -29,14 +25,15 @@
     <!--        android:layout_height="wrap_content"/>-->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:id="@+id/menu1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,23 +42,43 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/button3"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/CheckUser"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="시작" />
+                        android:textSize="20sp" />
 
-                    <Button
-                        android:id="@+id/button4"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/Status"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="종료" />
+                        android:fontFamily="@font/nanumsquareroundb"
+                        android:paddingTop="20dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="20dp"
+                        android:text="실시간 알림"
+                        android:textAlignment="viewEnd"
+                        android:textSize="16sp" />
+
+                    <Switch
+                        android:id="@+id/OnOffSw"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:fontFamily="@font/nanumsquareroundr"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="10dp"
+                        android:switchMinWidth="50dp"
+                        android:textSize="16sp"
+                        android:trackTint="#79CF9F" />
                 </LinearLayout>
+
             </LinearLayout>
 
             <fragment
@@ -77,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/feedback"
@@ -184,7 +201,7 @@
                     android:fontFamily="@font/nanumsquareroundeb"
                     android:gravity="center|clip_vertical"
                     android:text="2차선 이상의 도로인가요?"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
 
                 <RadioGroup
                     android:layout_width="wrap_content"
@@ -192,7 +209,7 @@
                     android:layout_weight="1"
                     android:orientation="horizontal"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp" >
+                    android:paddingRight="20dp">
 
                     <RadioButton
                         android:id="@+id/yes2dir"
@@ -240,8 +257,8 @@
                 android:background="#FFFFFF"
                 android:fontFamily="@font/nanumsquareroundb"
                 android:paddingLeft="15dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
                 android:text="TextView"
                 android:textColor="@color/colorBlack"
                 android:textSize="20sp" />
@@ -257,7 +274,8 @@
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"
                 android:text="   로그아웃"
-                android:textAlignment="textStart" />
+                android:textAlignment="textStart"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/button2"
@@ -270,7 +288,8 @@
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"
                 android:text="   회원탈퇴"
-                android:textAlignment="textStart" />
+                android:textAlignment="textStart"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/button5"
@@ -283,7 +302,8 @@
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"
                 android:text="   앱 버전\n   1.0"
-                android:textAlignment="textStart" />
+                android:textAlignment="textStart"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/button6"
@@ -297,10 +317,21 @@
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"
                 android:text="   도움말"
-                android:textAlignment="textStart" />
+                android:textAlignment="textStart"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
     </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:fontFamily="@font/nanumsquareroundb"
+        app:itemIconTint="@drawable/selector"
+        app:itemTextColor="@drawable/selector"
+        app:menu="@menu/navigation" />
 
 </LinearLayout>
