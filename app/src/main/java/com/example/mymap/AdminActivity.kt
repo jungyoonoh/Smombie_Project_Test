@@ -65,18 +65,6 @@ class AdminActivity : AppCompatActivity() {
                     startActivity(i)
                 }
         }
-/*
-        button3.setOnClickListener{
-            val intent = Intent(this, AlarmService::class.java)
-            startService(intent)
-            Toast.makeText(this,"Service 시작", Toast.LENGTH_SHORT).show();
-        }
-
-        button4.setOnClickListener {
-            val intent = Intent(this, AlarmService::class.java)
-            stopService(intent)
-            Toast.makeText(this,"Service 끝", Toast.LENGTH_SHORT).show();
-        }*/
     }
 
     fun initLocation(){

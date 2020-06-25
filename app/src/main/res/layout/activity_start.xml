@@ -4,16 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/colorWhite"
     android:backgroundTint="#FFFFFF"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
     tools:context=".StartActivity">
 
     <Button
         android:id="@+id/start"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_marginBottom="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="90dp"
+        android:background="#FAFAFA"
         android:fontFamily="@font/nanumsquareroundeb"
+        android:padding="30dp"
         android:text="시작하기"
         android:textColor="#000000"
         android:textSize="30sp"
@@ -28,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="130dp"
-        android:background="#B3B3B3"
+        android:background="#FAFAFA"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp">
@@ -36,7 +40,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="104dp"
-            android:layout_height="104dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="32dp"
             app:srcCompat="@drawable/logo" />
 
@@ -51,7 +55,7 @@
             android:fontFamily="@font/nanumsquareroundeb"
             android:gravity="center|clip_vertical"
             android:text="Walking Path"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/colorBlack"
             android:textSize="36sp" />
     </LinearLayout>
 
