@@ -32,7 +32,6 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 BaseColumns._COUNT + " INTEGER PRIMARY KEY," + //string to integer 해주기
                 DataEntry.LAT + "  TEXT," +
                 DataEntry.LNG + " TEXT )"
-
     }
 
     class DataEntry : BaseColumns { //테이블 형식
@@ -68,17 +67,13 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             }
 
         },db,context,(MAX/1000)+1) // 변수 계산법 생각하자
-
         task.execute(arr)
     }
-
-
 
     fun deleteAll(){
         val db = writableDatabase
         db.execSQL("delete from " + TABLE_NAME)
     }
-
 
     fun loadData(): ArrayList<MyData> {
         val DataArrayList = ArrayList<MyData>()
@@ -103,7 +98,7 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return DataArrayList
     }
 
-    fun loadDataAdmin(): ArrayList<adminData> {
+    fun loadAdminData() : ArrayList<adminData> {
         val DataArrayList = ArrayList<adminData>()
         val db = readableDatabase
 
@@ -119,7 +114,7 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         while (cursor.moveToNext()) {
             val lat = cursor.getString(cursor.getColumnIndex(DataEntry.LAT))
             val lng = cursor.getString(cursor.getColumnIndex(DataEntry.LNG))
-            val data = adminData(lat, lng)
+            val data = adminData(lat, lng,1,1,1,"")
             DataArrayList.add(data)
         }
         Log.e("총 개수",cursor.count.toString())
@@ -147,8 +142,6 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             window?.setAttributes(lp)
             // dialog 사이즈
             dlg.show()
-
-
             // 중간에 종료시 1) 다 삭제후 다시 2) 중간지점 저장후 다시
         }
         fun parsingJson(params:URL) {
@@ -210,5 +203,4 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             dlg.dismiss()
         }
     }
-
 }

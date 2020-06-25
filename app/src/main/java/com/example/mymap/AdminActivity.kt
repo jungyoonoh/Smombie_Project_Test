@@ -23,11 +23,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class AdminActivity : AppCompatActivity() {
 
-
     var backKeyPressedTime:Double = 0.0
     var firstcall = true
+    val myAdminDbHelper: MyAdminDBHelper = MyAdminDBHelper(this)
     val myDbHelper: MyDBHelper = MyDBHelper(this)
-    lateinit var data:ArrayList<adminData>
+    lateinit var adminData:ArrayList<adminData> // 사용자가 추가한거
+    lateinit var data:ArrayList<adminData> // 원래 있던 데이터 클러스터용
     var fusedLocationClient: FusedLocationProviderClient?= null
     var locationCallback: LocationCallback?= null
     var locationRequest: LocationRequest?= null
@@ -51,9 +52,11 @@ class AdminActivity : AppCompatActivity() {
         val i = intent
         id = i.getStringExtra("ID")
         userId.text="ID : "+id+" (관리자 모드로 작동중)"
+        adminData=ArrayList<adminData>()
         data=ArrayList<adminData>()
         initListener()
-        data=myDbHelper.loadDataAdmin()
+        adminData=myAdminDbHelper.loadDataAdmin()
+        data=myDbHelper.loadAdminData()
     }
 
     fun initListener(){
@@ -99,14 +102,18 @@ class AdminActivity : AppCompatActivity() {
         Log.e("size : ",data.size.toString())
         var clusterManager = ClusterManager<adminData>(this,googleMap)
         googleMap.setOnCameraChangeListener(clusterManager)
+
         for(i in 0..data.size - 1) {
             clusterManager.addItem(data[i])
-//                val options = MarkerOptions()
-//                val sample = LatLng(data.get(i).lat.toDouble(), data.get(i).long.toDouble())
-//                options.position(sample)
-//                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-//                val mk1 = googleMap.addMarker(options)
-//                mk1.showInfoWindow()
+        }
+
+        for(i in 0..adminData.size-1){
+            val options = MarkerOptions()
+            val sample = LatLng(adminData.get(i).lat.toDouble(), adminData.get(i).long.toDouble())
+            options.position(sample)
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+            val mk1 = googleMap.addMarker(options)
+            mk1.showInfoWindow()
         }
     }
 

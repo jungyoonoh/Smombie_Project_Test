@@ -33,16 +33,17 @@ import kotlin.math.pow
 class MainActivity : AppCompatActivity() {
 
     val myDbHelper: MyDBHelper = MyDBHelper(this)
+    val myAdminDbHelper: MyAdminDBHelper = MyAdminDBHelper(this)
     lateinit var data:ArrayList<MyData>
     var fusedLocationClient: FusedLocationProviderClient ?= null
     var locationCallback: LocationCallback?= null
     var locationRequest: LocationRequest?= null
 
+    lateinit var savLatLng:LatLng
+
     lateinit var googleMap: GoogleMap
-//    lateinit var googleMapForAdmin: GoogleMap
 
     var loc = LatLng(37.554752,126.970631)
-    val arrLoc = ArrayList<LatLng>()
 
     lateinit var id:String
 
@@ -103,6 +104,25 @@ class MainActivity : AppCompatActivity() {
                     val i = Intent(this, StartActivity::class.java)
                     startActivity(i)
                 }
+        }
+        submitbtn.setOnClickListener{
+            // db에 넣기위해 0 = false / 1 = true
+            var cw = 0
+            var tl = 0
+            var m2 = 0
+            var text = editTextMultiLine.text.toString()
+            when(group1.checkedRadioButtonId){
+                R.id.yesCW->{cw = 1}
+            }
+            when(group2.checkedRadioButtonId){
+                R.id.yesTL->{tl = 1}
+            }
+            when(group3.checkedRadioButtonId){
+                R.id.yes2dir->{m2 = 1}
+            }
+            val adminData = adminData(savLatLng.latitude.toString(),savLatLng.longitude.toString(),cw,tl,m2,text)
+            myAdminDbHelper.addAdminData(adminData)
+            Toast.makeText(this,"제출되었습니다.",Toast.LENGTH_SHORT).show()
         }
 
         //여기부터 토글버튼 관련코드
@@ -286,14 +306,6 @@ class MainActivity : AppCompatActivity() {
             googleMap.setMaxZoomPreference(24.0f)
             initMapListener()
         }
-//        val mapFragmentForAdmin = supportFragmentManager.findFragmentById(R.id.map2) as SupportMapFragment
-//        mapFragmentForAdmin.getMapAsync{
-//            googleMapForAdmin = it
-//            googleMapForAdmin.moveCamera(CameraUpdateFactory.newLatLngZoom(loc,24.0f))
-//            googleMapForAdmin.setMinZoomPreference(8.0f)
-//            googleMapForAdmin.setMaxZoomPreference(24.0f)
-//            initMapListenerForAdmin()
-//        }
     }
     fun addCircleNearUser(loc:LatLng){
         googleMap.clear()
@@ -330,6 +342,7 @@ class MainActivity : AppCompatActivity() {
                 menu3.visibility= GONE
                 val item: MenuItem = navigationView.menu.findItem(R.id.navigation_comment)
                 item.setChecked(true)
+                savLatLng = sample
             }
         }
     }
