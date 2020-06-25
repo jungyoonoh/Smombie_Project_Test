@@ -2,8 +2,12 @@ package com.example.mymap
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -26,23 +30,65 @@ class StartActivity : AppCompatActivity() {
         init()
         // 1. id를 받아오기 2. true false 받아오기
     }
+    fun checkInternet():Boolean{
+        val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+        if (connectivityManager != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val capabilities =
+                    connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+                if (capabilities != null) {
+                    if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                        return true
+                    } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                        return true
+                    } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                        return true
+                    }
+                }
+            } else {
+                try {
+                    val activeNetworkInfo =
+                        connectivityManager.activeNetworkInfo
+                    if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
+                        return true
+                    }
+                } catch (e: Exception) {
+                }
+            }
+        }
+        return false
+    }
     fun init(){
         val pref = getSharedPreferences("checkFirst", Activity.MODE_PRIVATE)
         val first=pref.getBoolean("checkFirst",true)//(키 값, 디폴트값 : 첫실행때 갖는값)
         if(first) {
-            val builder = AlertDialog.Builder(this)
-            builder.setMessage("이 앱을 사용하기 위한 구성요소 다운 (1분이내 소요)")
-                .setTitle("구성요소 다운로드")//.setIcon(
-            builder.setPositiveButton("확인") { _, _ ->
-                val editor = pref.edit()
-                myDbHelper.deleteAll()//일단 다지우고 다시삽입 ( 중간부터 삽입가능하려면 중간지점을 알아야함)
-                myDbHelper.makeData(editor)
-            }
-            val dialog=builder.create()
-            dialog.show()
+                if(!checkInternet()){
+                    val builder = AlertDialog.Builder(this)
+                    builder.setMessage("인터넷 연결 상태를 확인해주세요")
+                        .setTitle("인터넷 연결 오류")//.setIcon(
+                    builder.setPositiveButton("확인") { _, _ ->
+                        finishAffinity()
+                    }
+                    val dialog = builder.create()
+                    dialog.show()
+
+                }else {
+                    val builder = AlertDialog.Builder(this)
+                    builder.setMessage("이 앱을 사용하기 위한 구성요소 다운 (1분이내 소요)")
+                        .setTitle("구성요소 다운로드")//.setIcon(
+                    builder.setPositiveButton("확인") { _, _ ->
+                        val editor = pref.edit()
+                        myDbHelper.deleteAll()//일단 다지우고 다시삽입 ( 중간부터 삽입가능하려면 중간지점을 알아야함)
+                        myDbHelper.makeData(editor)
+                    }
+                    val dialog = builder.create()
+                    dialog.show()
+
+
+                }
+
         }
-        initPermisson()
         start.setOnClickListener {
             login()
         }
@@ -78,74 +124,5 @@ class StartActivity : AppCompatActivity() {
 //                .setTheme(R.style.MySuperAppTheme) // Set theme
 
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
-            if (resultCode == Activity.RESULT_OK) {//로그인 최초 성공시
-                val user = FirebaseAuth.getInstance().currentUser
-                val i = Intent(this, MainActivity::class.java)
-                i.putExtra("ID",user?.email)
-                if(user?.email == "admin@konkuk.ac.kr"){
-                    var admin = Intent(this,AdminActivity::class.java)
-                    admin.putExtra("ID",user?.email)
-                    startActivity(admin)
-                } else
-                    startActivity(i)
-            } else {
-                Toast.makeText(this,"로그인 실패", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
-
-    fun askPermisson(requestPermission:Array<String>,REQ_PERMISSON:Int){//요청하는 함수
-        ActivityCompat.requestPermissions(this,requestPermission,REQ_PERMISSON)
-    }
-    fun checkAppPermission(requestPermission: Array<String>): Boolean { //false인 권한있는지 확인하는 함수
-
-        val requestResult = BooleanArray(requestPermission. size)
-        for (i in requestResult. indices ) {
-            requestResult[i] = ContextCompat.checkSelfPermission(
-                this,
-                requestPermission[i]
-            ) == PackageManager. PERMISSION_GRANTED
-            if (!requestResult[i]) {
-                return false
-            }
-        }
-        return true
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode){
-            GPS_REQUEST->{
-                if(!checkAppPermission(permissions)){
-                    Toast.makeText(applicationContext,"권한 승인안됨", Toast.LENGTH_SHORT).show()
-                    finish()
-                }
-            }
-        }
-    }
-
-
-    fun initPermisson(){
-        if(checkAppPermission(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION))){//권한 허용이 이미 돼있는 경우
-            login()
-        }else{//권한이없는경우
-            val builder= AlertDialog.Builder(this)
-            builder.setMessage("이 앱은 위치정보 권한이 반드시 필요합니다")
-                .setTitle("권한 요청")//.setIcon(
-            builder.setPositiveButton("확인"){ _,_->
-                askPermisson(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),GPS_REQUEST)
-            }
-            val dialog=builder.create()
-            dialog.show()
-
-        }
-    }
-
 
 }
