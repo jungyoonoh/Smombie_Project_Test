@@ -9,16 +9,13 @@ import android.util.Log
 import com.example.mymap.MyAdminDBHelper.DataEntry.Companion.TABLE_NAME
 
 
-class MyAdminDBHelper(val context: Context) : SQLiteOpenHelper(context,
-    MyDBHelper.DATABASE_NAME, null,
-    MyDBHelper.DATABASE_VERSION
-)  {
+class MyAdminDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION)  {
     var list:ArrayList<MyData> = ArrayList<MyData>()
     val MAX=32133//최대값
 
     companion object {
         val DATABASE_VERSION = 1
-        val DATABASE_NAME = "DataDB.db"
+        val DATABASE_NAME = "AdminDataDB.db"
         val SQL_CREATE_ENTRIES = "CREATE TABLE " + DataEntry.TABLE_NAME + " (" +
                 BaseColumns._COUNT + " INTEGER PRIMARY KEY," + //string to integer 해주기
                 DataEntry.LAT + " TEXT," +

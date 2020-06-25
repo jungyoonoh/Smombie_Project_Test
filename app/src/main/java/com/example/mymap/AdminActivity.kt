@@ -3,6 +3,7 @@ package com.example.mymap
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -54,7 +55,6 @@ class AdminActivity : AppCompatActivity() {
         userId.text="ID : "+id+" (관리자 모드로 작동중)"
         adminData=ArrayList<adminData>()
         data=ArrayList<adminData>()
-        initListener()
         adminData=myAdminDbHelper.loadDataAdmin()
         data=myDbHelper.loadAdminData()
     }
@@ -112,6 +112,11 @@ class AdminActivity : AppCompatActivity() {
             val sample = LatLng(adminData.get(i).lat.toDouble(), adminData.get(i).long.toDouble())
             options.position(sample)
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+            options.title("제보받은정보")
+            var geocoder = Geocoder(this)
+            var list = geocoder.getFromLocation(adminData.get(i).lat.toDouble(),adminData.get(i).long.toDouble(),1)
+            var str = list[0].getAddressLine(0)
+            options.snippet(str)
             val mk1 = googleMap.addMarker(options)
             mk1.showInfoWindow()
         }
