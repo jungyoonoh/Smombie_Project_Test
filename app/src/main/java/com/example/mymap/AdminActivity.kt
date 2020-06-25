@@ -181,12 +181,15 @@ class AdminActivity : AppCompatActivity() {
             appFinish();
         }
     }
+
+    // 앱종료
     fun appFinish(){
         finishAffinity();
         System.runFinalization();
         System.exit(0);
     }
 
+    // 권한
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

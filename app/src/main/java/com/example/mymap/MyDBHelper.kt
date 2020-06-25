@@ -22,6 +22,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+    // 기존 데이터 전용 (클러스터 x)
     var list:ArrayList<MyData> = ArrayList<MyData>()
     val MAX=32133//최대값
 
@@ -29,12 +30,12 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val DATABASE_VERSION = 1
         val DATABASE_NAME = "DataDB.db"
         val SQL_CREATE_ENTRIES = "CREATE TABLE " + DataEntry.TABLE_NAME + " (" +
-                BaseColumns._COUNT + " INTEGER PRIMARY KEY," + //string to integer 해주기
+                BaseColumns._COUNT + " INTEGER PRIMARY KEY," + // string to integer 해주기
                 DataEntry.LAT + "  TEXT," +
                 DataEntry.LNG + " TEXT )"
     }
 
-    class DataEntry : BaseColumns { //테이블 형식
+    class DataEntry : BaseColumns { // 테이블 형식
         companion object {
             val TABLE_NAME = "Crosswalk"
             val LAT = "lat"
@@ -58,7 +59,7 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             end=start+999
             if(end>32000) end=MAX
             arr.add(URL("http://openapi.seoul.go.kr:8088/65485243776b6f653731596e4b7178/json/SdeA004A1W/"+start+"/"+end+"/"))
-        }
+        } // 파싱
 
         var task:DataTask= DataTask( object : DataTask.AsyncResponse{
             override fun processFinish() {
@@ -66,7 +67,7 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 editor.commit()//저장 실행하는 함수
             }
 
-        },db,context,(MAX/1000)+1) // 변수 계산법 생각하자
+        },db,context,(MAX/1000)+1)
         task.execute(arr)
     }
 
@@ -75,12 +76,11 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.execSQL("delete from " + TABLE_NAME)
     }
 
-    fun loadData(): ArrayList<MyData> {
+    fun loadData(): ArrayList<MyData> { // 사용자용 데이터 로드
         val DataArrayList = ArrayList<MyData>()
         val db = readableDatabase
 
         val projection = arrayOf(
-            //   DataEntry.OBJECTID,
             DataEntry.LAT,
             DataEntry.LNG
         )
@@ -98,7 +98,7 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return DataArrayList
     }
 
-    fun loadAdminData() : ArrayList<adminData> {
+    fun loadAdminData() : ArrayList<adminData> { // 기존 db지만 admin용 데이터 로드
         val DataArrayList = ArrayList<adminData>()
         val db = readableDatabase
 
@@ -121,6 +121,7 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return DataArrayList
     }
 
+    // 작업
     class DataTask (asyncResponse: AsyncResponse,val db:SQLiteDatabase,val context: Context, val MAX:Int): AsyncTask<ArrayList<URL>, Void, Boolean>() {
         var ar: AsyncResponse? = asyncResponse
         lateinit var dlg: Dialog
@@ -165,7 +166,6 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             for (j in 0 until array.size()) {
                 val lat = array[j].asJsonObject.get("LAT").asString
                 val lng = array[j].asJsonObject.get("LNG").asString
-                // 기본키 값 추가 해야할듯
                 val values = ContentValues()
                 values.put(DataEntry.LAT,lat)
                 values.put(DataEntry.LNG,lng)

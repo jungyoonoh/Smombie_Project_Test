@@ -35,7 +35,7 @@ class AlarmService :Service (){
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        //TODO : 서비스 처음 시작시 할 동작 정의.
+        // 서비스 시작
         data=myDbHelper.loadData()
         makeNotification()
         initLocation()
@@ -45,7 +45,7 @@ class AlarmService :Service (){
         fusedLocationClient?.removeLocationUpdates(locationCallback)
     }
     override fun onDestroy() {
-        //TODO : 서비스 종료시 할 것들
+        // 서비스 종료
         super.onDestroy()
         stopLocationUpdates()
     }
@@ -62,12 +62,6 @@ class AlarmService :Service (){
             manager.createNotificationChannel(notificationChannel)
         }
 
-//        val notificationChannel = NotificationChannel(// 알람등 설정 가능한 channel 설정
-//            CHANNELID,
-//            "Start Check Notification",
-//            NotificationManager. IMPORTANCE_DEFAULT
-//        )
-
         val builder = NotificationCompat.Builder(this,CHANNELID)
             .setSmallIcon(R.drawable.logo)
             .setContentTitle("알림시작")
@@ -75,14 +69,8 @@ class AlarmService :Service (){
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_CALL)
 
-//        val builder=Notification.Builder(this,CHANNELID)
-//        builder.setContentTitle ("알림시작")
-//        builder.setContentText("지도 알림을 시작합니다")
-//            .setSmallIcon( R.mipmap. ic_launcher)
-//            .setCategory(NotificationCompat.CATEGORY_CALL)
-
         val intent = Intent(this,MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP //화면 전환 intent
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP // 화면 전환 intent
 
         val user = FirebaseAuth.getInstance().currentUser
         intent.putExtra("ID",user?.email.toString())
@@ -146,7 +134,7 @@ class AlarmService :Service (){
                     data.get(i).isNearby=true
                    if(!isVibrate) {
                        val CHANNELID = "notification2"
-                       val notificationChannel = NotificationChannel(// 알람등 설정 가능한 channel 설정
+                       val notificationChannel = NotificationChannel( // 알람등 설정 가능한 channel 설정
                            CHANNELID,
                            "Map Check Notification",
                            NotificationManager.IMPORTANCE_DEFAULT
@@ -154,7 +142,7 @@ class AlarmService :Service (){
                        notificationChannel.enableVibration(true)
                        notificationChannel.vibrationPattern = longArrayOf(100, 200)
 
-                       //화면꺼진상태에선 on 상태여도 알림 x
+                       // 화면꺼진상태에선 on 상태여도 알림 x
 
                        val builder = Notification.Builder(this, CHANNELID)
                        builder.setContentTitle("위험!")
@@ -187,9 +175,6 @@ class AlarmService :Service (){
 
             }else data.get(i).isNearby = false
 
-        }// 확인누르면 알림끝내고
-        //isVibrate=false
+        } // 확인누르면 알림끝
     }
-
-    //지도기능
 }

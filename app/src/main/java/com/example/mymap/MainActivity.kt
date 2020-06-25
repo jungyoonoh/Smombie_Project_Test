@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         checkTheSetting()
     }
-    fun settingTab(){
+    fun settingTab(){ // 네비게이션 바
         navigationView.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.navigation_home->{
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
     fun initListener(){
         button.setOnClickListener {
-            AuthUI.getInstance()//로그아웃
+            AuthUI.getInstance() // 로그아웃
                 .signOut(this)
                 .addOnCompleteListener {
                     val intent = Intent(this, AlarmService::class.java)
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         }
         button2.setOnClickListener {
             AuthUI.getInstance()
-                .delete(this)//계정 탈퇴
+                .delete(this) // 계정 탈퇴
                 .addOnCompleteListener {
                     val intent = Intent(this, AlarmService::class.java)
                     stopService(intent)
@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this,"제출되었습니다.",Toast.LENGTH_SHORT).show()
         }
 
-        //여기부터 토글버튼 관련코드
+        // 토글버튼
         val pref = getSharedPreferences("checkOnOff", Activity.MODE_PRIVATE)
         val check=pref.getBoolean("checkOnOff",false)//(키 값, 디폴트값 : 첫실행때 갖는값)
         val editor = pref.edit()
@@ -148,38 +148,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun search(loc:LatLng){
-        var minLatitude:Double = (data.get(0).lat.toDouble() - loc.latitude).absoluteValue
-        var minLongitude:Double = (data.get(0).long.toDouble() - loc.longitude).absoluteValue
-        var savDistance = sqrt(minLatitude.pow(2.0) + minLongitude.pow(2.0))
-        var distance:Double = 0.1
-        var savLat:Double = -0.1
-        var savLong:Double = -0.1
-        for(i in 0..data.size - 1) {
-            minLatitude = (loc.latitude - data.get(i).lat.toDouble()).absoluteValue
-            minLongitude = (loc.longitude - data.get(i).long.toDouble()).absoluteValue
-            distance = sqrt(minLatitude .pow(2.0) + minLongitude.pow(2.0))
-            if(savDistance > distance) {
-                savDistance = distance
-                savLat = data.get(i).lat.toDouble()
-                savLong = data.get(i).long.toDouble()
-            }
-        }
-        Log.e("DATA : ", "$savLat, $savLong")
-        val options = MarkerOptions()
-        val sample = LatLng(savLat, savLong)
-        options.position(sample)
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-        val mk1 = googleMap.addMarker(options)
-        mk1.showInfoWindow()
-    }
-
-    fun setCrossWalkMarker(loc:LatLng){ // 근처 애들만 마커찍기 테스트용
+    fun setCrossWalkMarker(loc:LatLng){ // 근처 애들만 마커찍기용
         var temp:FloatArray= FloatArray(1)
         for(i in 0..data.size - 1) {
             data.get(i) // MyData(lat,lng);
             Location.distanceBetween(loc.latitude,loc.longitude,data.get(i).lat.toDouble(), data.get(i).long.toDouble(),temp)
-                if (temp[0] < 500) { // 인근 정보만 표시되도록 우선 테스트
+                if (temp[0] < 500) { // 인근 정보만 표시되도록
                     Log.e("DATA : ", data.get(i).lat + ", " + data.get(i).long)
                     val options = MarkerOptions()
                     val sample = LatLng(data.get(i).lat.toDouble(), data.get(i).long.toDouble())
@@ -190,12 +164,13 @@ class MainActivity : AppCompatActivity() {
                 }
         }
     }
+
+    // db갱신
     fun init(){
         val i = intent
         id = i.getStringExtra("ID")
         userId.text="ID : "+id
         data=ArrayList<MyData>()
-        initListener()
         data=myDbHelper.loadData()
     }
 
@@ -222,6 +197,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // 권한 체크
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -272,10 +248,8 @@ class MainActivity : AppCompatActivity() {
                 for(location in locationResult.locations){
                     loc = LatLng(location.latitude,location.longitude)
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc,18.0f)) // 위치 바로이동
-                    // 비교하는 함수를 넣어서 가장 가까운 녀석 좌표 뽑아보기 할까?
                     addCircleNearUser(loc)
                     setCrossWalkMarker(loc)
-                    //search(loc)
                 }
             }
         }
@@ -306,6 +280,7 @@ class MainActivity : AppCompatActivity() {
             initMapListener()
         }
     }
+    // 유저 입장에서 반경
     fun addCircleNearUser(loc:LatLng){
         googleMap.clear()
         var nearCircle = CircleOptions().center(loc) // 중심점
@@ -319,6 +294,8 @@ class MainActivity : AppCompatActivity() {
             .fillColor(Color.parseColor("#884169e1")); //배경색
         googleMap.addCircle(user)
     }
+
+    // 맵 눌렀을때
     fun initMapListener(){
         googleMap.setOnMapClickListener {
             googleMap.clear()
