@@ -102,6 +102,30 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         Log.e("총 개수",cursor.count.toString())
         return DataArrayList
     }
+
+    fun loadDataAdmin(): ArrayList<adminData> {
+        val DataArrayList = ArrayList<adminData>()
+        val db = readableDatabase
+
+        val projection = arrayOf(
+            //   DataEntry.OBJECTID,
+            DataEntry.LAT,
+            DataEntry.LNG
+        )
+
+        val cursor = db.query(DataEntry.TABLE_NAME,
+            projection, null, null, null, null, null)
+
+        while (cursor.moveToNext()) {
+            val lat = cursor.getString(cursor.getColumnIndex(DataEntry.LAT))
+            val lng = cursor.getString(cursor.getColumnIndex(DataEntry.LNG))
+            val data = adminData(lat, lng)
+            DataArrayList.add(data)
+        }
+        Log.e("총 개수",cursor.count.toString())
+        return DataArrayList
+    }
+
     class DataTask (asyncResponse: AsyncResponse,val db:SQLiteDatabase,val context: Context, val MAX:Int): AsyncTask<ArrayList<URL>, Void, Boolean>() {
         var ar: AsyncResponse? = asyncResponse
         lateinit var dlg: Dialog

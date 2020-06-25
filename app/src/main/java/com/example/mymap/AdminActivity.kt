@@ -18,14 +18,16 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class AdminActivity : AppCompatActivity() {
 
+
     var backKeyPressedTime:Double = 0.0
     var firstcall = true
     val myDbHelper: MyDBHelper = MyDBHelper(this)
-    lateinit var data:ArrayList<MyData>
+    lateinit var data:ArrayList<adminData>
     var fusedLocationClient: FusedLocationProviderClient?= null
     var locationCallback: LocationCallback?= null
     var locationRequest: LocationRequest?= null
@@ -49,9 +51,9 @@ class AdminActivity : AppCompatActivity() {
         val i = intent
         id = i.getStringExtra("ID")
         userId.text="ID : "+id+" (관리자 모드로 작동중)"
-        data=ArrayList<MyData>()
+        data=ArrayList<adminData>()
         initListener()
-        data=myDbHelper.loadData()
+        data=myDbHelper.loadDataAdmin()
     }
 
     fun initListener(){
@@ -95,13 +97,16 @@ class AdminActivity : AppCompatActivity() {
 
     fun setCrossWalkMarker(){ // 근처 애들만 마커찍기 테스트용
         Log.e("size : ",data.size.toString())
+        var clusterManager = ClusterManager<adminData>(this,googleMap)
+        googleMap.setOnCameraChangeListener(clusterManager)
         for(i in 0..data.size - 1) {
-                val options = MarkerOptions()
-                val sample = LatLng(data.get(i).lat.toDouble(), data.get(i).long.toDouble())
-                options.position(sample)
-                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                val mk1 = googleMap.addMarker(options)
-                mk1.showInfoWindow()
+            clusterManager.addItem(data[i])
+//                val options = MarkerOptions()
+//                val sample = LatLng(data.get(i).lat.toDouble(), data.get(i).long.toDouble())
+//                options.position(sample)
+//                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+//                val mk1 = googleMap.addMarker(options)
+//                mk1.showInfoWindow()
         }
     }
 

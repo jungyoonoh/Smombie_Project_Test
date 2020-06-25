@@ -109,11 +109,7 @@ class MainActivity : AppCompatActivity() {
         val pref = getSharedPreferences("checkOnOff", Activity.MODE_PRIVATE)
         val check=pref.getBoolean("checkOnOff",false)//(키 값, 디폴트값 : 첫실행때 갖는값)
         val editor = pref.edit()
-        if(check) {
-            OnOffSw.isChecked=true
-        }else{
-            OnOffSw.isChecked=false
-        }
+        OnOffSw.isChecked = check
         OnOffSw.setOnCheckedChangeListener { compoundButton, b ->
             if(b){
                 val intent = Intent(this, AlarmService::class.java)
@@ -237,7 +233,6 @@ class MainActivity : AppCompatActivity() {
         else{
             appFinish();
         }
-        backKeyPressedTime
     }
     fun appFinish(){
         finishAffinity();

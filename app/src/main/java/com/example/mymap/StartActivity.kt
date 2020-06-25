@@ -84,10 +84,7 @@ class StartActivity : AppCompatActivity() {
                     }
                     val dialog = builder.create()
                     dialog.show()
-
-
                 }
-
         }
         start.setOnClickListener {
             login()
@@ -107,6 +104,7 @@ class StartActivity : AppCompatActivity() {
                 startActivity(i)
         } else createSignInIntent()//아니면 로그인화면
     }
+
     fun createSignInIntent(){
         val provider= arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
@@ -118,12 +116,8 @@ class StartActivity : AppCompatActivity() {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(provider)
                 .setLogo(R.drawable.logo)
-                .setIsSmartLockEnabled(false). //smartLock이 뭘까
+                .setIsSmartLockEnabled(false).
                     build(),
             RC_SIGN_IN) // 로그인 하는 파이어베이스 제공 activity 시작
-//      .setLogo(R.drawable.my_great_logo) // Set logo drawable
-//                .setTheme(R.style.MySuperAppTheme) // Set theme
-
     }
-
 }
