@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     var locationRequest: LocationRequest?= null
 
     lateinit var googleMap: GoogleMap
+//    lateinit var googleMapForAdmin: GoogleMap
 
     var loc = LatLng(37.554752,126.970631)
     val arrLoc = ArrayList<LatLng>()
@@ -59,7 +61,6 @@ class MainActivity : AppCompatActivity() {
                     menu1.visibility=VISIBLE
                     menu2.visibility= GONE
                     menu3.visibility= GONE
-
                 }
                 R.id.navigation_comment->{
                     menu1.visibility=GONE
@@ -74,7 +75,6 @@ class MainActivity : AppCompatActivity() {
             }
             return@setOnNavigationItemSelectedListener true
         }
-
     }
     fun checkTheSetting(){
         init()
@@ -84,8 +84,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initListener(){
-
-
         button.setOnClickListener {
             AuthUI.getInstance()//로그아웃
                 .signOut(this)
@@ -293,6 +291,14 @@ class MainActivity : AppCompatActivity() {
             googleMap.setMaxZoomPreference(24.0f)
             initMapListener()
         }
+//        val mapFragmentForAdmin = supportFragmentManager.findFragmentById(R.id.map2) as SupportMapFragment
+//        mapFragmentForAdmin.getMapAsync{
+//            googleMapForAdmin = it
+//            googleMapForAdmin.moveCamera(CameraUpdateFactory.newLatLngZoom(loc,24.0f))
+//            googleMapForAdmin.setMinZoomPreference(8.0f)
+//            googleMapForAdmin.setMaxZoomPreference(24.0f)
+//            initMapListenerForAdmin()
+//        }
     }
     fun addCircleNearUser(loc:LatLng){
         googleMap.clear()
@@ -309,7 +315,25 @@ class MainActivity : AppCompatActivity() {
     }
     fun initMapListener(){
         googleMap.setOnMapClickListener {
+            googleMap.clear()
+            val options = MarkerOptions()
+            val sample = LatLng(it.latitude, it.longitude) // 사용자가 찍은 위치
+            options.position(sample)
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
 
+            var geocoder = Geocoder(this)
+            var list = geocoder.getFromLocation(it.latitude,it.longitude,1)
+            options.title("새로운 횡단보도 제보하기")
+            var str = list[0].getAddressLine(0)
+            options.snippet(str)
+
+            val mk1 = googleMap.addMarker(options)
+            mk1.showInfoWindow()
+            googleMap.setOnInfoWindowClickListener {
+                menu1.visibility=GONE
+                menu2.visibility=VISIBLE
+                menu3.visibility= GONE
+            }
         }
     }
 }
