@@ -117,6 +117,7 @@ class StartActivity : AppCompatActivity() {
             AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(provider)
+                .setLogo(R.drawable.logo)
                 .setIsSmartLockEnabled(false). //smartLock이 뭘까
                     build(),
             RC_SIGN_IN) // 로그인 하는 파이어베이스 제공 activity 시작
