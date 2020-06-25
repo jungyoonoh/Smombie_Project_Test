@@ -175,12 +175,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setCrossWalkMarker(loc:LatLng){ // 근처 애들만 마커찍기 테스트용
-        var checkDirection:BooleanArray= booleanArrayOf(false,false,false,false)
         var temp:FloatArray= FloatArray(1)
         for(i in 0..data.size - 1) {
             data.get(i) // MyData(lat,lng);
             Location.distanceBetween(loc.latitude,loc.longitude,data.get(i).lat.toDouble(), data.get(i).long.toDouble(),temp)
-                if (temp[0] < 1000) { // 인근 정보만 표시되도록 우선 테스트
+                if (temp[0] < 500) { // 인근 정보만 표시되도록 우선 테스트
                     Log.e("DATA : ", data.get(i).lat + ", " + data.get(i).long)
                     val options = MarkerOptions()
                     val sample = LatLng(data.get(i).lat.toDouble(), data.get(i).long.toDouble())
@@ -206,13 +205,13 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            getuserlocation() //유저의 최근 현재 위치에 대한 정보 받기
-            startLocationUpdates() // 갱신해주기
-            initmap() // 맵정보 초기화
         } else{ // 허용하지 않았다면 or 맨처음 시작이라면?
             ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION),100)
         }
+        getuserlocation() //유저의 최근 현재 위치에 대한 정보 받기
+        startLocationUpdates() // 갱신해주기
+        initmap() // 맵정보 초기화
     }
 
     fun getuserlocation(){

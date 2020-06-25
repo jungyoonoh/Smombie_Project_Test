@@ -186,4 +186,23 @@ class AdminActivity : AppCompatActivity() {
         System.runFinalization();
         System.exit(0);
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == 100){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                getuserlocation()
+                startLocationUpdates()
+                initmap()
+            } else{
+                Toast.makeText(this,"위치정보 제공을 하셔야 합니다.",Toast.LENGTH_SHORT).show()
+                initmap()
+            }
+        }
+    }
 }
