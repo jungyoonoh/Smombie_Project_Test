@@ -54,6 +54,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         checkTheSetting()
     }
+
+    override fun onRestart() {
+        super.onRestart()
+        initLocation()
+    }
+
     fun settingTab(){ // 네비게이션 바
         navigationView.setOnNavigationItemSelectedListener {
             when(it.itemId){
@@ -77,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
     fun checkTheSetting(){
         init()
         initListener()

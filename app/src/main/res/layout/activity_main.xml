@@ -91,6 +91,7 @@
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:text="횡단보도 제보하기"
+                android:textColor="@color/colorBlack"
                 android:textSize="36sp" />
 
             <LinearLayout
@@ -107,10 +108,11 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:fontFamily="@font/nanumsquareroundeb"
-                    android:paddingLeft="5dp"
+                    android:paddingLeft="10dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="횡단보도가 그려져있나요?"
+                    android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
                 <RadioGroup
@@ -127,13 +129,17 @@
                         android:id="@+id/yesCW"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="예" />
+                        android:fontFamily="@font/nanumsquareroundeb"
+                        android:text="예"
+                        android:textColor="@color/colorBlack" />
 
                     <RadioButton
                         android:id="@+id/noCW"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="아니오" />
+                        android:fontFamily="@font/nanumsquareroundeb"
+                        android:text="아니오"
+                        android:textColor="@color/colorBlack" />
                 </RadioGroup>
 
             </LinearLayout>
@@ -151,10 +157,11 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:fontFamily="@font/nanumsquareroundeb"
-                    android:paddingLeft="5dp"
+                    android:paddingLeft="10dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="신호등이 있나요?"
+                    android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
                 <RadioGroup
@@ -171,13 +178,17 @@
                         android:id="@+id/yesTL"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="예" />
+                        android:fontFamily="@font/nanumsquareroundeb"
+                        android:text="예"
+                        android:textColor="@color/colorBlack" />
 
                     <RadioButton
                         android:id="@+id/noTL"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="아니오" />
+                        android:fontFamily="@font/nanumsquareroundeb"
+                        android:text="아니오"
+                        android:textColor="@color/colorBlack" />
                 </RadioGroup>
 
             </LinearLayout>
@@ -195,10 +206,11 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:fontFamily="@font/nanumsquareroundeb"
-                    android:paddingLeft="5dp"
+                    android:paddingLeft="10dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="2차선 이상의 도로인가요?"
+                    android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
                 <RadioGroup
@@ -216,13 +228,17 @@
                         android:id="@+id/yes2dir"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="예" />
+                        android:fontFamily="@font/nanumsquareroundeb"
+                        android:text="예"
+                        android:textColor="@color/colorBlack" />
 
                     <RadioButton
                         android:id="@+id/no2dir"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="아니오" />
+                        android:fontFamily="@font/nanumsquareroundeb"
+                        android:text="아니오"
+                        android:textColor="@color/colorBlack" />
                 </RadioGroup>
             </LinearLayout>
 
@@ -233,10 +249,11 @@
                 android:layout_marginBottom="1dp"
                 android:background="@color/colorWhite"
                 android:fontFamily="@font/nanumsquareroundeb"
-                android:paddingLeft="5dp"
+                android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="기타 건의사항이 있다면 자유롭게 적어주세요."
+                android:textColor="@color/colorBlack"
                 android:textSize="18sp" />
 
             <EditText
@@ -245,6 +262,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
                 android:ems="10"
+                android:fontFamily="@font/nanumsquareroundeb"
                 android:gravity="start|top"
                 android:hint="ex) ~~ 기능을 추가해주세요"
                 android:inputType="textMultiLine"
@@ -260,7 +278,7 @@
                 android:background="@color/colorWhite"
                 android:fontFamily="@font/nanumsquareroundeb"
                 android:text="제출하기"
-                android:textColor="#707070"
+                android:textColor="@color/colorBlack"
                 android:textSize="24sp" />
 
         </LinearLayout>
