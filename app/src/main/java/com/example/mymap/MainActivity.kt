@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity() {
         for(i in 0..data.size - 1) {
             data.get(i) // MyData(lat,lng);
             Location.distanceBetween(loc.latitude,loc.longitude,data.get(i).lat.toDouble(), data.get(i).long.toDouble(),temp)
-                if (temp[0] < 500) { // 인근 정보만 표시되도록
+                if (temp[0] < 50) { // 인근 정보만 표시되도록
                     Log.e("DATA : ", data.get(i).lat + ", " + data.get(i).long)
                     val options = MarkerOptions()
                     val sample = LatLng(data.get(i).lat.toDouble(), data.get(i).long.toDouble())

@@ -128,7 +128,7 @@ class AlarmService :Service (){
         for(i in 0..data.size - 1) {
             data.get(i) // MyData(lat,lng);
             Location.distanceBetween(loc.latitude,loc.longitude,data.get(i).lat.toDouble(), data.get(i).long.toDouble(),temp)
-            if(temp[0]<500){
+            if(temp[0]<50){
                 //알람
                 if(data.get(i).isNearby==false) {
                     data.get(i).isNearby=true
