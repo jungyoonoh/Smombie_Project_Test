@@ -353,7 +353,7 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"
-                android:text="   개발자 정보\n   Yoon"
+                android:text="   개발자 정보\n   201711347 정윤오"
                 android:textAlignment="textStart"
                 android:textSize="16sp" />
 
