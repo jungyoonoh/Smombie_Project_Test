@@ -26,28 +26,21 @@ import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
-import java.lang.Math.sqrt
-import kotlin.math.absoluteValue
-import kotlin.math.pow
 
 class MainActivity : AppCompatActivity() {
 
-    val myDbHelper: MyDBHelper = MyDBHelper(this)
-    val myAdminDbHelper: MyAdminDBHelper = MyAdminDBHelper(this)
-    lateinit var data:ArrayList<MyData>
+    val myDbHelper: MyDBHelper = MyDBHelper(this) // 기존 데이터 로드용
+    val myAdminDbHelper: MyAdminDBHelper = MyAdminDBHelper(this) // 사용자가 제보하고자 할때 DB에 add
+    lateinit var data:ArrayList<MyData> // 이미 저장된 데이터들로 사용자서버는 돌아감
     var fusedLocationClient: FusedLocationProviderClient ?= null
     var locationCallback: LocationCallback?= null
     var locationRequest: LocationRequest?= null
 
-    lateinit var savLatLng:LatLng
-
+    lateinit var savLatLng:LatLng // 제보용 좌표
     lateinit var googleMap: GoogleMap
-
-    var loc = LatLng(37.554752,126.970631)
-
-    lateinit var id:String
-
-    var backKeyPressedTime:Double = 0.0
+    var loc = LatLng(37.554752,126.970631) // 유저 위치 갱신 위함
+    lateinit var id:String // 사용자 id
+    var backKeyPressedTime:Double = 0.0 // 취소키 2회 종료
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         checkTheSetting()
     }
 
+    // 홈화면이나 다른 앱 쓰다가 돌아오면 지도 갱신 인터벌 다시넣어주기위해
     override fun onRestart() {
         super.onRestart()
         initLocation()
@@ -84,6 +78,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    //초기화
     fun checkTheSetting(){
         init()
         initListener()
@@ -91,8 +86,9 @@ class MainActivity : AppCompatActivity() {
         initLocation()
     }
 
+    // UI 관련
     fun initListener(){
-        button.setOnClickListener {
+        logoutbtn.setOnClickListener {
             AuthUI.getInstance() // 로그아웃
                 .signOut(this)
                 .addOnCompleteListener {
@@ -102,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(i)
                 }
         }
-        button2.setOnClickListener {
+        withdrawal.setOnClickListener {
             AuthUI.getInstance()
                 .delete(this) // 계정 탈퇴
                 .addOnCompleteListener {
@@ -152,15 +148,15 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this,"Service 끝",Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 
-    fun setCrossWalkMarker(loc:LatLng){ // 근처 애들만 마커찍기용
+    // 근처 애들만 마커찍기용
+    fun setCrossWalkMarker(loc:LatLng){
         var temp:FloatArray= FloatArray(1)
         for(i in 0..data.size - 1) {
             data.get(i) // MyData(lat,lng);
             Location.distanceBetween(loc.latitude,loc.longitude,data.get(i).lat.toDouble(), data.get(i).long.toDouble(),temp)
-                if (temp[0] < 50) { // 인근 정보만 표시되도록
+                if (temp[0] < 500) { // 인근 정보만 표시되도록
                     Log.e("DATA : ", data.get(i).lat + ", " + data.get(i).long)
                     val options = MarkerOptions()
                     val sample = LatLng(data.get(i).lat.toDouble(), data.get(i).long.toDouble())
@@ -172,7 +168,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // db갱신
+    // DB갱신
     fun init(){
         val i = intent
         id = i.getStringExtra("ID")
@@ -181,8 +177,8 @@ class MainActivity : AppCompatActivity() {
         data=myDbHelper.loadData()
     }
 
+    // 권한정보 체크 = checkSelfPermission
     fun initLocation(){
-        // 권한정보 체크 = checkSelfPermission
         if(ActivityCompat.checkSelfPermission(this, // 이미 허용되어있다면?
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this,
@@ -224,6 +220,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // 취소키 누르면
     override fun onBackPressed() {
         //super.onBackPressed()
         // 2초 이내로 눌러야함
@@ -236,13 +233,15 @@ class MainActivity : AppCompatActivity() {
             appFinish();
         }
     }
+    // 앱 완전종료. 스택에 상관없이
     fun appFinish(){
         finishAffinity();
         System.runFinalization();
         System.exit(0);
     }
 
-    fun startLocationUpdates(){ // 현재 위치 받아오기
+    // 현재 위치 받아오기
+    fun startLocationUpdates(){
         locationRequest = LocationRequest.create()?.apply {
             interval = 10000
             fastestInterval = 5000
@@ -276,8 +275,8 @@ class MainActivity : AppCompatActivity() {
         stopLocationUpdates()
     }
 
+    // map을 초기화 Async 구조
     fun initmap() {
-        // map을 초기화를 해줘야..
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync{
             googleMap = it

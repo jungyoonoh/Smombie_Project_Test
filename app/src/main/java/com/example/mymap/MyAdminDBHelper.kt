@@ -10,9 +10,7 @@ import com.example.mymap.MyAdminDBHelper.DataEntry.Companion.TABLE_NAME
 
 
 class MyAdminDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION)  {
-    var list:ArrayList<MyData> = ArrayList<MyData>()
-    val MAX=32133//최대값
-    // 새로 db 파일을 파야함 안그러면 충돌
+    // 새로 DB 파일을 파야함 안그러면 충돌
     companion object {
         val DATABASE_VERSION = 1
         val DATABASE_NAME = "AdminDataDB.db"
@@ -26,7 +24,8 @@ class MyAdminDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE
                 DataEntry.COMMENT + " TEXT )"
     }
 
-    class DataEntry : BaseColumns { //테이블 형식
+    //테이블 형식
+    class DataEntry : BaseColumns {
         companion object {
             val TABLE_NAME = "UserFeedbackCrosswalk"
             val LAT = "lat"
@@ -46,6 +45,7 @@ class MyAdminDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE
         //db 버전 바꼈을때 실행
     }
 
+    // 유저가 제보한거 넣기
     fun addAdminData(data:adminData){
         val db= writableDatabase
         val values = ContentValues()
@@ -63,7 +63,8 @@ class MyAdminDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE
         db.execSQL("delete from " + TABLE_NAME)
     }
 
-    fun loadDataAdmin(): ArrayList<adminData> { // 유저가 등록한 파일 보여주기용
+    // 유저가 등록한 파일 보여주기용
+    fun loadDataAdmin(): ArrayList<adminData> {
         val DataArrayList = ArrayList<adminData>()
         val db = readableDatabase
 
@@ -90,7 +91,6 @@ class MyAdminDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE
             val data = adminData(lat, lng, checkCW,checkTL,checkMore2,comment)
             DataArrayList.add(data)
         }
-        Log.e("총 개수",cursor.count.toString())
         return DataArrayList
     }
 }

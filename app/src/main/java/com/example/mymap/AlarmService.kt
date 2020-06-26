@@ -25,10 +25,10 @@ class AlarmService :Service (){
     var locationCallback: LocationCallback?= null
     var locationRequest: LocationRequest?= null
 
-    val myDbHelper: MyDBHelper = MyDBHelper(this)
+    val myDbHelper: MyDBHelper = MyDBHelper(this) // 공공데이터
     lateinit var data:ArrayList<MyData>
 
-    var loc = LatLng(37.554752,126.970631)
+    var loc = LatLng(37.554752,126.970631) // 초기위치
 
     override fun onBind(p0: Intent?): IBinder? {
         TODO("Not yet implemented")
@@ -51,6 +51,7 @@ class AlarmService :Service (){
     }
 
     fun makeNotification(){
+        // 푸시 알림 설정
         val CHANNELID="notification1"
         val CHANNELNAME = "Start Check Notification"
         if(Build.VERSION.SDK_INT >= 26){
@@ -69,6 +70,7 @@ class AlarmService :Service (){
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_CALL)
 
+        // 푸시 누르면 액티비티로 전환 하도록
         val intent = Intent(this,MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP // 화면 전환 intent
 

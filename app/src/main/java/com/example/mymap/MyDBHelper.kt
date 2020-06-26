@@ -23,7 +23,6 @@ import java.net.URL
 
 class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     // 기존 데이터 전용 (클러스터 x)
-    var list:ArrayList<MyData> = ArrayList<MyData>()
     val MAX=32133//최대값
 
     companion object {
@@ -51,6 +50,7 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         //db 버전 바꼈을때 실행
     }
 
+    // 서울시 공공데이터 받아오기
     fun makeData(editor: SharedPreferences.Editor){
         val db= writableDatabase
         var end:Int=0
@@ -64,7 +64,7 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         var task:DataTask= DataTask( object : DataTask.AsyncResponse{
             override fun processFinish() {
                 editor.putBoolean("checkFirst", false)
-                editor.commit()//저장 실행하는 함수
+                editor.commit() //저장 실행하는 함수
             }
 
         },db,context,(MAX/1000)+1)
@@ -76,7 +76,8 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.execSQL("delete from " + TABLE_NAME)
     }
 
-    fun loadData(): ArrayList<MyData> { // 사용자용 데이터 로드
+    // 사용자용 데이터 로드
+    fun loadData(): ArrayList<MyData> {
         val DataArrayList = ArrayList<MyData>()
         val db = readableDatabase
 
@@ -94,11 +95,11 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val data = MyData(lat, lng)
             DataArrayList.add(data)
         }
-        Log.e("총 개수",cursor.count.toString())
         return DataArrayList
     }
 
-    fun loadAdminData() : ArrayList<adminData> { // 기존 db지만 admin용 데이터 로드
+    // admin용 데이터 로드
+    fun loadAdminData() : ArrayList<adminData> {
         val DataArrayList = ArrayList<adminData>()
         val db = readableDatabase
 
@@ -117,7 +118,6 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val data = adminData(lat, lng,1,1,1,"")
             DataArrayList.add(data)
         }
-        Log.e("총 개수",cursor.count.toString())
         return DataArrayList
     }
 
@@ -131,7 +131,7 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         }
 
         fun loading(){
-            dlg= Dialog(context)//시작
+            dlg= Dialog(context) // 시작
             dlg.setContentView(R.layout.loading)
             dlg.setCancelable(false) // 다이얼로그 바깥클릭 or 나가기 불가능
 
@@ -170,24 +170,22 @@ class MyDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 values.put(DataEntry.LAT,lat)
                 values.put(DataEntry.LNG,lng)
 
-                Log.e("파싱중",j.toString()) //몇개들어가는지 확인하려고 넣었음
                 db.insert(DataEntry.TABLE_NAME, null, values)
 
             }
             count++
-            val percent=(count.toDouble()/MAX.toDouble()) * 100 //강제 형변환 하면 계산이된 Int를 double 형태로 변환함
+            val percent=(count.toDouble()/MAX.toDouble()) * 100 // 강제 형변환 하면 계산이된 Int를 double 형태로 변환함
 
-            Log.e("percent",percent.toString())
             dlg.progressBar.setProgress(percent.toInt())
         }
 
         override fun onPreExecute() {
             super.onPreExecute()
             loading()
-
         }
+
+        // 전달된 url을 이용한 작업
         override fun doInBackground(vararg params: ArrayList<URL>):Boolean{
-            // 전달된 url을 이용한 작업
             var bool:Boolean=false
             var end=params.get(0).size
             for(i in 0 until end){

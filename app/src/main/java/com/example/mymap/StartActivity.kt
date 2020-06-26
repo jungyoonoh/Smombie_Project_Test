@@ -30,7 +30,9 @@ class StartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start)
         init()
     }
-    fun checkInternet():Boolean{ // wifi나 데이터 연결되야함
+
+    // wifi나 데이터 연결 되어있어야함
+    fun checkInternet():Boolean{
         val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         if (connectivityManager != null) {
@@ -59,6 +61,8 @@ class StartActivity : AppCompatActivity() {
         }
         return false
     }
+
+
     fun init(){
         val pref = getSharedPreferences("checkFirst", Activity.MODE_PRIVATE)
         val first=pref.getBoolean("checkFirst",true) // (키 값, 디폴트값 : 첫실행때 갖는값)
@@ -73,7 +77,7 @@ class StartActivity : AppCompatActivity() {
                     val dialog = builder.create()
                     dialog.show()
 
-                }else {
+                }else { // 인터넷이 연결되어있다면
                     val builder = AlertDialog.Builder(this)
                     builder.setMessage("이 앱을 사용하기 위한 구성요소 다운 (1분이내 소요)")
                         .setTitle("구성요소 다운로드")//.setIcon(
@@ -84,14 +88,13 @@ class StartActivity : AppCompatActivity() {
                     }
                     val dialog = builder.create()
                     dialog.show()
-
-
                 }
-
         }
+
         start.setOnClickListener {
             login()
         }
+
         val user = FirebaseAuth.getInstance().currentUser
         if(user!=null){
             val i = Intent(this, MainActivity::class.java)
@@ -104,9 +107,10 @@ class StartActivity : AppCompatActivity() {
         }
     }
 
+    // 로그인
     fun login(){
         val user = FirebaseAuth.getInstance().currentUser
-        if(user!=null){ //로그인된경우 바로 메인화면
+        if(user!=null){ // 로그인된경우 바로 메인화면
             val i = Intent(this, MainActivity::class.java)
             i.putExtra("ID",user.email)
             if(user?.email == "admin@konkuk.ac.kr") {
@@ -114,8 +118,10 @@ class StartActivity : AppCompatActivity() {
                 admin.putExtra("ID", user?.email)
                 startActivity(admin)
             } else startActivity(i)
-        } else createSignInIntent() //아니면 로그인화면
+        } else createSignInIntent() // 아니면 로그인화면
     }
+
+    // 로그인 하는 파이어베이스 제공 activity
     fun createSignInIntent(){
         val provider= arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build()
@@ -128,13 +134,14 @@ class StartActivity : AppCompatActivity() {
                 .setTheme(R.style.LoginTheme)
                 .setIsSmartLockEnabled(false).
                     build(),
-            RC_SIGN_IN) // 로그인 하는 파이어베이스 제공 activity 시작
+            RC_SIGN_IN)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
-            if (resultCode == Activity.RESULT_OK) {//로그인 최초 성공시
+            if (resultCode == Activity.RESULT_OK) {// 로그인 최초 성공시
                 val user = FirebaseAuth.getInstance().currentUser
                 val i = Intent(this, MainActivity::class.java)
                 i.putExtra("ID",user?.email)
@@ -149,6 +156,8 @@ class StartActivity : AppCompatActivity() {
             }
         }
     }
+
+    // 2회 취소키 눌러서 바로 종료하기
     override fun onBackPressed() {
         //super.onBackPressed() 이게 스택 제거
         // 2초 이내로 눌러야함
@@ -160,8 +169,9 @@ class StartActivity : AppCompatActivity() {
         else{
             appFinish();
         }
-        backKeyPressedTime
     }
+
+    // 앱 종료
     fun appFinish(){
         finishAffinity();
         System.runFinalization();

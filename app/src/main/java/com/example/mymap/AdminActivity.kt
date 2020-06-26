@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
-import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
@@ -24,16 +23,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class AdminActivity : AppCompatActivity() {
 
-    var backKeyPressedTime:Double = 0.0
-    var firstcall = true
-    val myAdminDbHelper: MyAdminDBHelper = MyAdminDBHelper(this)
-    val myDbHelper: MyDBHelper = MyDBHelper(this)
+    var backKeyPressedTime:Double = 0.0 // 취소 2번 누르면 종료
+    var firstcall = true // 1회 갱신 후 더이상 위치갱신 안하도록
+    val myAdminDbHelper: MyAdminDBHelper = MyAdminDBHelper(this) // adminData 전용 DB와 테이블 관리하기위해
+    val myDbHelper: MyDBHelper = MyDBHelper(this) // MyData 전용 DB와 테이블 관리
     lateinit var adminData:ArrayList<adminData> // 사용자가 추가한거
     lateinit var data:ArrayList<adminData> // 원래 있던 데이터 클러스터용
     var fusedLocationClient: FusedLocationProviderClient?= null
     var locationCallback: LocationCallback?= null
     var locationRequest: LocationRequest?= null
-    lateinit var id:String
+    lateinit var id:String // 접속한 관리자 아이디
     var loc = LatLng(37.554752,126.970631) // 관리자는 서울역으로 먼저 뜨도록
     lateinit var googleMap: GoogleMap
 
@@ -41,6 +40,11 @@ class AdminActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin)
         checkTheSetting()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        initLocation()
     }
 
     fun checkTheSetting(){
@@ -60,7 +64,7 @@ class AdminActivity : AppCompatActivity() {
     }
 
     fun initListener(){
-        button.setOnClickListener {
+        logoutbtn.setOnClickListener {
             AuthUI.getInstance()//로그아웃
                 .signOut(this)
                 .addOnCompleteListener {
@@ -99,7 +103,7 @@ class AdminActivity : AppCompatActivity() {
     }
 
     fun setCrossWalkMarker(){ // 근처 애들만 마커찍기 테스트용
-        Log.e("size : ",data.size.toString())
+        // 마커 몇개 이상이면 뭉쳐서 나오게 -> 클러스터(기존 DB)
         var clusterManager = ClusterManager<adminData>(this,googleMap)
         googleMap.setOnCameraChangeListener(clusterManager)
 
@@ -107,6 +111,7 @@ class AdminActivity : AppCompatActivity() {
             clusterManager.addItem(data[i])
         }
 
+        // 새롭게 유저가 제보한것들
         for(i in 0..adminData.size-1){
             val options = MarkerOptions()
             val sample = LatLng(adminData.get(i).lat.toDouble(), adminData.get(i).long.toDouble())
