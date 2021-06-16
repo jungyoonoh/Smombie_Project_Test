@@ -13,17 +13,11 @@
 바닥에 횡단보도가 그려져있는 곳이면 신호 유무에 상관없이 어디든지 알림 수신 가능 <br>
 
 ### 사용 이미지
-- 사용자 화면<br>
+- 사용자 화면(1)
+- 백그라운드 알람 작동 화면(2)
+- API에서 없는 데이터를 수집하기 위한 제보 기능(3)
+- 관리자 계정 접속시 전체 정보와 추가 제보 관리 기능
 ![image](https://user-images.githubusercontent.com/29244603/122158558-dac2ec80-cea7-11eb-8965-5db2ed07e972.png)
-
-
-- 백그라운드 알람 작동 화면<br>
 ![image](https://user-images.githubusercontent.com/29244603/122158567-ddbddd00-cea7-11eb-8573-5cb2f6db92fc.png)
-
-
-- API에서 없는 데이터를 수집하기 위한 제보 기능<br>
 ![image](https://user-images.githubusercontent.com/29244603/122158583-e4e4eb00-cea7-11eb-9674-ff520f3185d7.png)
-
-
-- 관리자 계정 접속시 전체 정보와 추가 제보 관리 기능<br>
 ![image](https://user-images.githubusercontent.com/29244603/122158597-e9110880-cea7-11eb-9270-90d82b52eb7b.png)
