@@ -1,5 +1,5 @@
 # Walking_Path
-![logo](https://user-images.githubusercontent.com/29244603/122157779-69cf0500-cea6-11eb-8c38-facd4bd2e54b.png)<br>
+![image](https://user-images.githubusercontent.com/29244603/122158497-bcf58780-cea7-11eb-9185-7eb11b11050f.png)<br>
 스몸비 방지 프로젝트 Walking_Path
 
 # 요약
@@ -14,16 +14,16 @@
 
 ### 사용 이미지
 - 사용자 화면<br>
-![image](https://user-images.githubusercontent.com/29244603/122157845-8cf9b480-cea6-11eb-855c-ebef765f4171.png)
+![image](https://user-images.githubusercontent.com/29244603/122158558-dac2ec80-cea7-11eb-8965-5db2ed07e972.png)
 
 
 - 백그라운드 알람 작동 화면<br>
-![image](https://user-images.githubusercontent.com/29244603/122158085-fc6fa400-cea6-11eb-8581-5d1e671c1166.png)
+![image](https://user-images.githubusercontent.com/29244603/122158567-ddbddd00-cea7-11eb-8573-5cb2f6db92fc.png)
 
 
 - API에서 없는 데이터를 수집하기 위한 제보 기능<br>
-![image](https://user-images.githubusercontent.com/29244603/122158339-7a33af80-cea7-11eb-8ef1-0d68a3b3d2fb.png)
+![image](https://user-images.githubusercontent.com/29244603/122158583-e4e4eb00-cea7-11eb-9674-ff520f3185d7.png)
 
 
-- 관리자 계정 접속시 전체 정보와 추가 제보 관리 가능<br>
-![image](https://user-images.githubusercontent.com/29244603/122158205-32ad2380-cea7-11eb-95c7-cf7d26e4d53c.png)
+- 관리자 계정 접속시 전체 정보와 추가 제보 관리 기능<br>
+![image](https://user-images.githubusercontent.com/29244603/122158597-e9110880-cea7-11eb-9270-90d82b52eb7b.png)
