@@ -16,11 +16,14 @@
 - 사용자 화면<br>
 ![image](https://user-images.githubusercontent.com/29244603/122157845-8cf9b480-cea6-11eb-855c-ebef765f4171.png)
 
+
 - 백그라운드 알람 작동 화면<br>
 ![image](https://user-images.githubusercontent.com/29244603/122158085-fc6fa400-cea6-11eb-8581-5d1e671c1166.png)
 
+
 - API에서 없는 데이터를 수집하기 위한 제보 기능<br>
-![image](https://user-images.githubusercontent.com/29244603/122158157-1b6e3600-cea7-11eb-91e3-722676d57c6b.png)
+![image](https://user-images.githubusercontent.com/29244603/122158339-7a33af80-cea7-11eb-8ef1-0d68a3b3d2fb.png)
+
 
 - 관리자 계정 접속시 전체 정보와 추가 제보 관리 가능<br>
 ![image](https://user-images.githubusercontent.com/29244603/122158205-32ad2380-cea7-11eb-95c7-cf7d26e4d53c.png)
