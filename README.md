@@ -1,5 +1,5 @@
 # Walking_Path
-![logo](https://user-images.githubusercontent.com/29244603/122157779-69cf0500-cea6-11eb-8c38-facd4bd2e54b.png)
+![logo](https://user-images.githubusercontent.com/29244603/122157779-69cf0500-cea6-11eb-8c38-facd4bd2e54b.png)<br>
 스몸비 방지 프로젝트 Walking_Path
 
 # 요약
@@ -13,13 +13,13 @@
 바닥에 횡단보도가 그려져있는 곳이면 신호 유무에 상관없이 어디든지 알림 수신 가능 <br>
 
 ### 사용 이미지
-- 사용자 화면
+- 사용자 화면<br>
 ![image](https://user-images.githubusercontent.com/29244603/122157845-8cf9b480-cea6-11eb-855c-ebef765f4171.png)
 
-- 백그라운드 알람 작동 화면
+- 백그라운드 알람 작동 화면<br>
 ![image](https://user-images.githubusercontent.com/29244603/122158085-fc6fa400-cea6-11eb-8581-5d1e671c1166.png)
 
-- API에서 없는 데이터를 수집하기 위한 제보 기능
+- API에서 없는 데이터를 수집하기 위한 제보 기능<br>
 ![image](https://user-images.githubusercontent.com/29244603/122158157-1b6e3600-cea7-11eb-91e3-722676d57c6b.png)
 
 - 관리자 계정 접속시 전체 정보와 추가 제보 관리 가능
